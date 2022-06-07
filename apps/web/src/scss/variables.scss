@@ -88,6 +88,7 @@ $mfaTypes: 0, 2, 3, 4, 6;
 $lightDangerHover: #c43421;
 $lightInputColor: #465057;
 $lightInputPlaceholderColor: #b6b8b8;
+$lightHoverBackgroundColor: #ededed;
 
 // Dark
 
@@ -219,6 +220,9 @@ $themes: (
     textMuted: #6c757d,
     textSuccessColor: $white,
     textWarningColor: $white,
+    stepperBackgroundColor: $lightHoverBackgroundColor,
+    stepperInactiveBadgeColor: $secondary,
+    stepperInactiveTextColor: #212529,
   ),
   dark: (
     primary: $darkPrimary,
@@ -330,6 +334,9 @@ $themes: (
     textMuted: $darkGrey1,
     textSuccessColor: $darkDarkBlue2,
     textWarningColor: $darkDarkBlue2,
+    stepperBackgroundColor: $darkDarkBlue2,
+    stepperInactiveBadgeColor: $darkGrey1,
+    stepperInactiveTextColor: $darkDarkBlue2,
   ),
 );
 

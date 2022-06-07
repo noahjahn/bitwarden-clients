@@ -1,0 +1,72 @@
+<div class="layout" [ngClass]="['layout', layout]">
+  <!-- TEAMS 1 Header -->
+  <header
+    class="header"
+    *ngIf="
+      layout === 'default' ||
+      layout === 'teams' ||
+      layout === 'teams1' ||
+      layout === 'teams2' ||
+      layout === 'enterprise' ||
+      layout === 'enterprise1' ||
+      layout === 'enterprise2' ||
+      layout === 'cnetcmpgnent' ||
+      layout === 'cnetcmpgnteams' ||
+      layout === 'cnetcmpgnind'
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-7">
+          <img
+            alt="Bitwarden"
+            class="logo mb-2"
+            src="../../images/register-layout/logo-horizontal-white.svg"
+          />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div [ngClass]="{ 'col-5': layout, 'col-12': !layout }">
+      <div class="row justify-content-md-center mt-5">
+        <div [ngClass]="{ 'col-5': !layout, 'col-12': layout }">
+          <h1 class="lead text-center mb-4" *ngIf="!layout">Start Trial</h1>
+          <div class="card d-block">
+            <div class="card-body">
+              <app-vertical-stepper #stepper linear>
+                <app-vertical-step label="Create Account">
+                  <p>This is content of "Step 1"</p>
+                  <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+                </app-vertical-step>
+                <app-vertical-step label="Create Organization" subLabel="It better be a good org">
+                  <p>This is content of "Step 2"</p>
+                  <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
+                  <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+                </app-vertical-step>
+                <app-vertical-step label="Billing">
+                  <p>This is content of "Step 3"</p>
+                  <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
+                  <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+                </app-vertical-step>
+                <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
+                  <p>This is any content of "Step 4"</p>
+                  <button
+                    bitButton
+                    buttonType="secondary"
+                    (click)="stepper.reset()"
+                    cdkStepperPrevious
+                  >
+                    Reset stepper
+                  </button>
+                  <button bitButton buttonType="primary" cdkStepperNext>Complete</button>
+                </app-vertical-step>
+              </app-vertical-stepper>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

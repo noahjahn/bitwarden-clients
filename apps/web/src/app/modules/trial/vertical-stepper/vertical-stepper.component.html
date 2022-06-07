@@ -1,0 +1,37 @@
+<div class="vertical-stepper">
+  <ul class="steps">
+    <li *ngFor="let step of steps; let i = index; let isLast = last">
+      <div class="step-container">
+        <button
+          (click)="selectStepByIndex(i)"
+          class="stepper-button"
+          [class.active]="selectedIndex === i"
+          [class.disabled]="isLast && isFinalStepDisabled()"
+        >
+          <span class="circle" *ngIf="!step.completed"> {{ i + 1 }} </span>
+          <span class="circle completed" *ngIf="step.completed">
+            <i class="bwi bwi-fw bwi-check" aria-hidden="true"></i>
+          </span>
+          <ng-container
+            *ngIf="step.stepLabel; else showLabelText"
+            [ngTemplateOutlet]="step.stepLabel.template"
+          >
+          </ng-container>
+          <ng-template #showLabelText>
+            <div class="step-label" [class.active]="selectedIndex === i">
+              <p class="main-label text">{{ step.label }}</p>
+              <p class="sub-label small text-muted">{{ step.subLabel }}</p>
+            </div>
+          </ng-template>
+        </button>
+      </div>
+      <div
+        class="step-content"
+        *ngIf="selectedIndex === i"
+        [ngTemplateOutlet]="selected ? selected.content : null"
+        [attr.aria-expanded]="selectedIndex === i"
+      ></div>
+      <div class="step-content divider" *ngIf="!isLast && !(selectedIndex === i)"></div>
+    </li>
+  </ul>
+</div>

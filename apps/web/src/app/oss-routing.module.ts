@@ -13,6 +13,7 @@ import { LoginComponent } from "./accounts/login.component";
 import { RecoverDeleteComponent } from "./accounts/recover-delete.component";
 import { RecoverTwoFactorComponent } from "./accounts/recover-two-factor.component";
 import { RegisterComponent } from "./accounts/register.component";
+import { TrialComponent } from "./modules/trial/trial.component";
 import { RemovePasswordComponent } from "./accounts/remove-password.component";
 import { SetPasswordComponent } from "./accounts/set-password.component";
 import { SsoComponent } from "./accounts/sso.component";
@@ -58,6 +59,12 @@ const routes: Routes = [
       {
         path: "register",
         component: RegisterComponent,
+        canActivate: [UnauthGuard],
+        data: { titleId: "createAccount" },
+      },
+      {
+        path: "trial",
+        component: TrialComponent,
         canActivate: [UnauthGuard],
         data: { titleId: "createAccount" },
       },
