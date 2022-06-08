@@ -1,16 +1,30 @@
-<div class="vertical-stepper">
-  <ul class="steps">
+<div>
+  <ul class="tw-flex tw-list-none tw-flex-col tw-flex-wrap tw-p-5">
     <li *ngFor="let step of steps; let i = index; let isLast = last">
-      <div class="step-container">
+      <div class="tw-w-74 tw-m-2.5 tw-text-center tw-h-16">
         <button
           (click)="selectStepByIndex(i)"
-          class="stepper-button"
-          [class.active]="selectedIndex === i"
-          [class.disabled]="isLast && isFinalStepDisabled()"
+          class="!tw-w-full tw-h-full tw-flex tw-border-none tw-cursor-pointer tw-bg-transparent tw-items-center tw-flex-row tw-max"
+          [ngClass]="{
+            'hover:tw-bg-secondary-100': !isLast && isFinalStepDisabled()
+          }"
         >
-          <span class="circle" *ngIf="!step.completed"> {{ i + 1 }} </span>
-          <span class="circle completed" *ngIf="step.completed">
-            <i class="bwi bwi-fw bwi-check" aria-hidden="true"></i>
+          <span
+            class="tw-rounded-full tw-flex-row tw-font-bold tw-leading-9 tw-mr-3.5 tw-items-center !tw-w-9"
+            *ngIf="!step.completed"
+            [ngClass]="{
+              '!tw-text-contrast !tw-bg-primary-500': selectedIndex === i,
+              '!tw-text-main !tw-bg-secondary-300': selectedIndex !== i && !isLast,
+              '!tw-text-muted !tw-bg-transparent': isLast && isFinalStepDisabled()
+            }"
+          >
+            {{ i + 1 }}
+          </span>
+          <span
+            class="!tw-text-contrast !tw-bg-primary-500 tw-rounded-full tw-flex-row tw-font-bold tw-leading-9 tw-mr-3.5 tw-items-center !tw-w-9"
+            *ngIf="step.completed"
+          >
+            <i class="bwi bwi-fw bwi-check tw-p-1" aria-hidden="true"></i>
           </span>
           <ng-container
             *ngIf="step.stepLabel; else showLabelText"
@@ -18,20 +32,35 @@
           >
           </ng-container>
           <ng-template #showLabelText>
-            <div class="step-label" [class.active]="selectedIndex === i">
-              <p class="main-label text">{{ step.label }}</p>
-              <p class="sub-label small text-muted">{{ step.subLabel }}</p>
+            <div
+              class="tw-text-left tw-txt-main tw-leading-snug tw-h-12 tw-mt-3.5"
+              [ngClass]="{
+                'tw-font-bold': selectedIndex === i
+              }"
+            >
+              <p
+                class="main-label text tw-text-main !tw-mb-1"
+                [ngClass]="{
+                  'tw-mt-1': !step.subLabel
+                }"
+              >
+                {{ step.label }}
+              </p>
+              <p class="sub-label small tw-text-muted">{{ step.subLabel }}</p>
             </div>
           </ng-template>
         </button>
       </div>
       <div
-        class="step-content"
+        class="tw-pl-7 tw-inline-block"
         *ngIf="selectedIndex === i"
         [ngTemplateOutlet]="selected ? selected.content : null"
         [attr.aria-expanded]="selectedIndex === i"
       ></div>
-      <div class="step-content divider" *ngIf="!isLast && !(selectedIndex === i)"></div>
+      <div
+        class="tw-h-6 tw-ml-8 tw-border-l-[1px] tw-border-r-0 tw-border-y-0 tw-border-solid tw-border-secondary-300"
+        *ngIf="!isLast && !(selectedIndex === i)"
+      ></div>
     </li>
   </ul>
 </div>
