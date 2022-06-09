@@ -1,23 +1,9 @@
-<div class="layout" [ngClass]="['layout', layout]">
-  <!-- TEAMS 1 Header -->
-  <header
-    class="header"
-    *ngIf="
-      layout === 'default' ||
-      layout === 'teams' ||
-      layout === 'teams1' ||
-      layout === 'teams2' ||
-      layout === 'enterprise' ||
-      layout === 'enterprise1' ||
-      layout === 'enterprise2' ||
-      layout === 'cnetcmpgnent' ||
-      layout === 'cnetcmpgnteams' ||
-      layout === 'cnetcmpgnind'
-    "
-  >
+<div class="trial">
+  <!-- TEAMS Header -->
+  <header class="header" *ngIf="layout === 'teams' || layout === 'enterprise'">
     <div class="container">
-      <div class="row">
-        <div class="col-7">
+      <div class="tw-flex-wrap">
+        <div class="tw-max-w-[50%]">
           <img
             alt="Bitwarden"
             class="logo mb-2"
@@ -28,42 +14,68 @@
     </div>
   </header>
 
-  <div class="container">
-    <div [ngClass]="{ 'col-5': layout, 'col-12': !layout }">
-      <div class="row justify-content-md-center mt-5">
-        <div [ngClass]="{ 'col-5': !layout, 'col-12': layout }">
-          <h1 class="lead text-center mb-4" *ngIf="!layout">Start Trial</h1>
-          <div class="card d-block">
-            <div class="card-body">
-              <app-vertical-stepper #stepper linear>
-                <app-vertical-step label="Create Account">
-                  <p>This is content of "Step 1"</p>
-                  <button bitButton buttonType="primary" cdkStepperNext>Next</button>
-                </app-vertical-step>
-                <app-vertical-step label="Create Organization" subLabel="It better be a good org">
-                  <p>This is content of "Step 2"</p>
-                  <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
-                  <button bitButton buttonType="primary" cdkStepperNext>Next</button>
-                </app-vertical-step>
-                <app-vertical-step label="Billing">
-                  <p>This is content of "Step 3"</p>
-                  <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
-                  <button bitButton buttonType="primary" cdkStepperNext>Next</button>
-                </app-vertical-step>
-                <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
-                  <p>This is any content of "Step 4"</p>
-                  <button
-                    bitButton
-                    buttonType="secondary"
-                    (click)="stepper.reset()"
-                    cdkStepperPrevious
-                  >
-                    Reset stepper
-                  </button>
-                  <button bitButton buttonType="primary" cdkStepperNext>Complete</button>
-                </app-vertical-step>
-              </app-vertical-stepper>
+  <div class="tw-flex tw-px-48">
+    <div class="" *ngIf="layout">
+      <div class="">
+        <!-- Default Body -->
+        <div class="!tw-w-100" *ngIf="layout === 'teams'">
+          <h1 class="!tw-text-contrast">You've chosen Bitwarden for Teams</h1>
+          <h2>
+            Trusted by millions of individuals, teams, and organizations worldwide for secure
+            password storage and sharing.
+          </h2>
+        </div>
+
+        <!-- Enterprise Body -->
+        <div *ngIf="layout === 'enterprise'">
+          <h1 class="!tw-text-contrast">You've chosen Bitwarden for Enterprise</h1>
+          <h2>
+            Trusted by millions of individuals, teams, and organizations worldwide for secure
+            password storage and sharing.
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="">
+        <h1 class="" *ngIf="!layout">Start Trial</h1>
+        <div class="tw-block tw-w-[650px]">
+          <div
+            class="tw-rounded tw-border tw-border-solid tw-bg-background tw-border-secondary-300"
+          >
+            <div
+              class="tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-t !tw-bg-secondary-100 tw-w-full"
+            >
+              <h2 class="tw-text-center tw-text-main">Start your free trial</h2>
             </div>
+            <app-vertical-stepper #stepper linear>
+              <app-vertical-step label="Create Account">
+                <p>This is content of "Step 1"</p>
+                <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+              </app-vertical-step>
+              <app-vertical-step label="Create Organization" subLabel="It better be a good org">
+                <p>This is content of "Step 2"</p>
+                <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
+                <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+              </app-vertical-step>
+              <app-vertical-step label="Billing">
+                <p>This is content of "Step 3"</p>
+                <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
+                <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+              </app-vertical-step>
+              <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
+                <p>This is any content of "Step 4"</p>
+                <button
+                  bitButton
+                  buttonType="secondary"
+                  (click)="stepper.reset()"
+                  cdkStepperPrevious
+                >
+                  Reset stepper
+                </button>
+                <button bitButton buttonType="primary" cdkStepperNext>Complete</button>
+              </app-vertical-step>
+            </app-vertical-stepper>
           </div>
         </div>
       </div>

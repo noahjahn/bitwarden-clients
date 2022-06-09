@@ -88,6 +88,32 @@ app-sponsored-families {
   }
 }
 
+.trial {
+  header {
+    background: #175ddc;
+    color: #ced4da;
+    height: 70px;
+
+    &:before {
+      background: #175ddc;
+      content: "";
+      height: 250px;
+      left: 0;
+      position: absolute;
+      top: -80px;
+      transform: skewY(-3deg);
+      width: 100%;
+      z-index: -1;
+    }
+    img.logo {
+      height: 57px;
+      margin: 12px 0 0;
+      max-width: 284px;
+      width: 284px;
+    }
+  }
+}
+
 /* Register Layout Page */
 .layout {
   &.default,
