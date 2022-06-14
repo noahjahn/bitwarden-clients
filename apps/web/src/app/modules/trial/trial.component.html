@@ -1,57 +1,73 @@
 <div class="">
-  <!-- TEAMS Header -->
-  <header
-    class="tw-bg-background-alt2 tw-text-white tw-h-[70px]"
-    *ngIf="layout === 'teams' || layout === 'enterprise'"
-  >
-    <div
-      class="tw-bg-background-alt2 tw-content-[''] tw-h-[250px] tw-left-0 tw-absolute tw-top-[-80px] tw--skew-y-3 tw-w-full tw-z-[-1]"
-    >
-      <div class="tw-flex-wrap">
-        <div class="tw-max-w-[50%]">
-          <img
-            alt="Bitwarden"
-            class="tw-h-[57px] tw-w-[284px] tw-mt-2.5 tw-mb-0 tw-mx-0"
-            src="../../images/register-layout/logo-horizontal-white.svg"
-          />
-        </div>
+  <header class="tw-bg-background-alt2 tw-text-white tw-h-16">
+    <div class="">
+      <div
+        class="tw-bg-background-alt2 tw-content-[''] tw-h-64 tw-left-0 tw-absolute tw--top-20 tw--skew-y-3 tw-w-full tw--z-10"
+      >
+        <div class="tw-flex-wrap"></div>
       </div>
     </div>
   </header>
 
-  <div class="tw-flex tw-px-48">
-    <div class="" *ngIf="layout">
-      <div class="">
-        <!-- Default Body -->
-        <div class="!tw-w-100" *ngIf="layout === 'teams'">
+  <div class="tw-flex tw-justify-center tw--mt-12">
+    <div class="tw-block min-w-min">
+      <div>
+        <img
+          alt="Bitwarden"
+          class="tw-h-[57px] tw-w-72 tw-mt-2.5 tw-mb-0 tw-mx-0"
+          src="../../images/register-layout/logo-horizontal-white.svg"
+        />
+      </div>
+      <div class="tw-pt-12">
+        <!-- Teams Body -->
+        <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'teams'">
           <h1 class="!tw-text-contrast">You've chosen Bitwarden for Teams</h1>
-          <h2>
-            Trusted by millions of individuals, teams, and organizations worldwide for secure
-            password storage and sharing.
-          </h2>
+          <div class="tw-pt-20">
+            <h2>
+              Trusted by millions of individuals, teams, and organizations worldwide for secure
+              password storage and sharing.
+            </h2>
+          </div>
         </div>
 
         <!-- Enterprise Body -->
-        <div *ngIf="layout === 'enterprise'">
+        <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'enterprise'">
           <h1 class="!tw-text-contrast">You've chosen Bitwarden for Enterprise</h1>
-          <h2>
-            Trusted by millions of individuals, teams, and organizations worldwide for secure
-            password storage and sharing.
-          </h2>
+          <div class="tw-pt-20">
+            <h2>
+              Trusted by millions of individuals, teams, and organizations worldwide for secure
+              password storage and sharing.
+            </h2>
+          </div>
+        </div>
+
+        <!-- Families Body -->
+        <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'families'">
+          <h1 class="!tw-text-contrast">You've chosen Bitwarden for Families</h1>
+          <div class="tw-pt-20">
+            <h2>
+              Trusted by millions of individuals, teams, and organizations worldwide for secure
+              password storage and sharing.
+            </h2>
+          </div>
         </div>
       </div>
     </div>
     <div>
-      <div class="">
+      <div class="tw-w-[700px]">
         <h1 class="" *ngIf="!layout">Start Trial</h1>
-        <div class="tw-block tw-w-[650px]">
+        <div class="tw-block tw-pt-52">
           <div
             class="tw-rounded tw-border tw-border-solid tw-bg-background tw-border-secondary-300"
           >
             <div
-              class="tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-t !tw-bg-secondary-100 tw-w-full"
+              class="tw-h-12 tw-flex tw-items-center tw-rounded-t !tw-bg-secondary-100 tw-w-full"
             >
-              <h2 class="tw-text-center tw-text-main">Start your free trial</h2>
+              <h2
+                class="tw-text-left tw-text-main tw-uppercase tw-pl-4 tw-text-base tw-mb-0 tw-font-bold"
+              >
+                Start your 7-Day free trial of Bitwarden for {{ layout }}
+              </h2>
             </div>
             <app-vertical-stepper #stepper linear>
               <app-vertical-step label="Create Account">
