@@ -14,6 +14,7 @@ import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstracti
 import { CipherService as CipherServiceAbstraction } from "@bitwarden/common/abstractions/cipher.service";
 import { CollectionService as CollectionServiceAbstraction } from "@bitwarden/common/abstractions/collection.service";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
+import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload.service";
 import { FolderService as FolderServiceAbstraction } from "@bitwarden/common/abstractions/folder.service";
 import { I18nService as I18nServiceAbstraction } from "@bitwarden/common/abstractions/i18n.service";
 import { ImportService as ImportServiceAbstraction } from "@bitwarden/common/abstractions/import.service";
@@ -47,6 +48,7 @@ import { InitService } from "./init.service";
 import { ModalService } from "./modal.service";
 import { PolicyListService } from "./policy-list.service";
 import { RouterService } from "./router.service";
+import { WebFileDownloadService } from "./webFileDownload.service";
 
 @NgModule({
   imports: [ToastrModule, JslibServicesModule],
@@ -127,6 +129,10 @@ import { RouterService } from "./router.service";
     {
       provide: PasswordRepromptServiceAbstraction,
       useClass: PasswordRepromptService,
+    },
+    {
+      provide: FileDownloadService,
+      useClass: WebFileDownloadService,
     },
     HomeGuard,
   ],
