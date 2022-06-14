@@ -2,10 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
+import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
+import { FileDownloadRequest } from "@bitwarden/common/models/domain/fileDownloadRequest";
 import { SubscriptionResponse } from "@bitwarden/common/models/response/subscriptionResponse";
 
 @Component({
@@ -30,7 +32,8 @@ export class UserSubscriptionComponent implements OnInit {
     private platformUtilsService: PlatformUtilsService,
     private i18nService: I18nService,
     private router: Router,
-    private logService: LogService
+    private logService: LogService,
+    private fileDownloadService: FileDownloadService
   ) {
     this.selfHosted = platformUtilsService.isSelfHost();
   }
@@ -139,11 +142,8 @@ export class UserSubscriptionComponent implements OnInit {
     }
 
     const licenseString = JSON.stringify(this.sub.license, null, 2);
-    this.platformUtilsService.saveFile(
-      window,
-      licenseString,
-      null,
-      "bitwarden_premium_license.json"
+    this.fileDownloadService.download(
+      new FileDownloadRequest(window, "bitwarden_premium_license.json", licenseString)
     );
   }
 
