@@ -22,7 +22,7 @@ export class OptionsComponent implements OnInit {
   enableAddLoginNotification = false;
   enableChangedPasswordNotification = false;
   showCardsCurrentTab = false;
-  dontShowIdentities = false;
+  showIdentitiesCurrentTab = false;
   showClearClipboard = true;
   theme: ThemeType;
   themeOptions: any[];
@@ -84,7 +84,7 @@ export class OptionsComponent implements OnInit {
     this.enableContextMenuItem = !(await this.stateService.getDisableContextMenuItem());
 
     this.showCardsCurrentTab = !(await this.stateService.getDontShowCardsCurrentTab());
-    this.dontShowIdentities = await this.stateService.getDontShowIdentitiesCurrentTab();
+    this.showIdentitiesCurrentTab = !(await this.stateService.getDontShowIdentitiesCurrentTab());
 
     this.enableAutoTotpCopy = !(await this.stateService.getDisableAutoTotpCopy());
 
@@ -140,8 +140,8 @@ export class OptionsComponent implements OnInit {
     await this.stateService.setDontShowCardsCurrentTab(!this.showCardsCurrentTab);
   }
 
-  async updateShowIdentities() {
-    await this.stateService.setDontShowIdentitiesCurrentTab(this.dontShowIdentities);
+  async updateShowIdentitiesCurrentTab() {
+    await this.stateService.setDontShowIdentitiesCurrentTab(!this.showIdentitiesCurrentTab);
   }
 
   async saveTheme() {
