@@ -1,7 +1,15 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, SecurityContext } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  SecurityContext,
+} from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import { IndividualConfig, ToastrService } from "ngx-toastr";
+import { Subject, takeUntil } from "rxjs";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
@@ -23,7 +31,9 @@ import { routerTransition } from "./app-routing.animations";
     <router-outlet #o="outlet"></router-outlet>
   </div>`,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  private destroyed$ = new Subject<void>();
+
   private lastActivity: number = null;
   private activeUserId: string;
 
@@ -46,7 +56,7 @@ export class AppComponent implements OnInit {
     // Clear them aggressively to make sure this doesn't occur
     await this.clearComponentStates();
 
-    this.stateService.activeAccount.subscribe((userId) => {
+    this.stateService.activeAccount.pipe(takeUntil(this.destroyed$)).subscribe((userId) => {
       this.activeUserId = userId;
     });
 
@@ -121,7 +131,7 @@ export class AppComponent implements OnInit {
 
     BrowserApi.messageListener("app.component", (window as any).bitwardenPopupMainMessageListener);
 
-    this.router.events.subscribe(async (event) => {
+    this.router.events.pipe(takeUntil(this.destroyed$)).subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
         const url = event.urlAfterRedirects || event.url || "";
         if (
@@ -144,6 +154,11 @@ export class AppComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   getState(outlet: RouterOutlet) {
