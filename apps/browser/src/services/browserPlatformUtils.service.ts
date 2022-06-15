@@ -357,21 +357,14 @@ export default class BrowserPlatformUtilsService implements PlatformUtilsService
   }
 
   getDefaultSystemTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
-    return Promise.resolve(this.prefersColorSchemeDark.matches ? ThemeType.Dark : ThemeType.Light);
+    throw new Error("Not implemented.");
   }
 
-  onDefaultSystemThemeChange(callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
-    this.prefersColorSchemeDark.addEventListener("change", ({ matches }) => {
-      callback(matches ? ThemeType.Dark : ThemeType.Light);
-    });
+  onDefaultSystemThemeChange(_callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
+    throw new Error("Not implemented.");
   }
 
-  async getEffectiveTheme() {
-    const theme = (await this.stateService.getTheme()) as ThemeType;
-    if (theme == null || theme === ThemeType.System) {
-      return this.getDefaultSystemTheme();
-    } else {
-      return theme;
-    }
+  async getEffectiveTheme(): Promise<ThemeType> {
+    throw new Error("Not implemented.");
   }
 }
