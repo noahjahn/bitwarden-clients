@@ -165,16 +165,16 @@
     <div class="box">
       <div class="box-content">
         <div class="box-content-row box-content-row-checkbox" appBoxRow>
-          <label for="favicon">{{ "disableFavicon" | i18n }}</label>
+          <label for="favicon">{{ "enableFavicon" | i18n }}</label>
           <input
             id="favicon"
             type="checkbox"
-            (change)="updateDisableFavicon()"
-            [(ngModel)]="disableFavicon"
+            (change)="updateFavicon()"
+            [(ngModel)]="enableFavicon"
           />
         </div>
       </div>
-      <div class="box-footer">{{ "disableFaviconDesc" | i18n }}</div>
+      <div class="box-footer">{{ "faviconDesc" | i18n }}</div>
     </div>
     <div class="box">
       <div class="box-content">

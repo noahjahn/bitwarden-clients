@@ -12,7 +12,7 @@ import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
   templateUrl: "options.component.html",
 })
 export class OptionsComponent implements OnInit {
-  disableFavicon = false;
+  enableFavicon = false;
   disableBadgeCounter = false;
   enableAutoFillOnPageLoad = false;
   autoFillOnPageLoadDefault = false;
@@ -88,7 +88,7 @@ export class OptionsComponent implements OnInit {
 
     this.enableAutoTotpCopy = !(await this.stateService.getDisableAutoTotpCopy());
 
-    this.disableFavicon = await this.stateService.getDisableFavicon();
+    this.enableFavicon = !(await this.stateService.getDisableFavicon());
 
     this.disableBadgeCounter = await this.stateService.getDisableBadgeCounter();
 
@@ -127,8 +127,8 @@ export class OptionsComponent implements OnInit {
     await this.stateService.setAutoFillOnPageLoadDefault(this.autoFillOnPageLoadDefault);
   }
 
-  async updateDisableFavicon() {
-    await this.stateService.setDisableFavicon(this.disableFavicon);
+  async updateFavicon() {
+    await this.stateService.setDisableFavicon(!this.enableFavicon);
   }
 
   async updateDisableBadgeCounter() {
