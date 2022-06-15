@@ -17,7 +17,7 @@ export class OptionsComponent implements OnInit {
   enableAutoFillOnPageLoad = false;
   autoFillOnPageLoadDefault = false;
   autoFillOnPageLoadOptions: any[];
-  disableAutoTotpCopy = false;
+  enableAutoTotpCopy = false; // TODO: Does it matter if this is set to false or true?
   disableContextMenuItem = false;
   disableAddLoginNotification = false;
   disableChangedPasswordNotification = false;
@@ -86,7 +86,7 @@ export class OptionsComponent implements OnInit {
     this.dontShowCards = await this.stateService.getDontShowCardsCurrentTab();
     this.dontShowIdentities = await this.stateService.getDontShowIdentitiesCurrentTab();
 
-    this.disableAutoTotpCopy = await this.stateService.getDisableAutoTotpCopy();
+    this.enableAutoTotpCopy = !(await this.stateService.getDisableAutoTotpCopy());
 
     this.disableFavicon = await this.stateService.getDisableFavicon();
 
@@ -116,7 +116,7 @@ export class OptionsComponent implements OnInit {
   }
 
   async updateAutoTotpCopy() {
-    await this.stateService.setDisableAutoTotpCopy(this.disableAutoTotpCopy);
+    await this.stateService.setDisableAutoTotpCopy(!this.enableAutoTotpCopy);
   }
 
   async updateAutoFillOnPageLoad() {

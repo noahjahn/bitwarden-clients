@@ -806,11 +806,11 @@
   "refreshComplete": {
     "message": "Refresh complete"
   },
-  "disableAutoTotpCopy": {
-    "message": "Disable Automatic TOTP Copy"
+  "enableAutoTotpCopy": {
+    "message": "Copy TOTP automatically"
   },
   "disableAutoTotpCopyDesc": {
-    "message": "If your login has an authenticator key attached to it, the TOTP verification code is automatically copied to your clipboard whenever you auto-fill the login."
+    "message": "If a login has an authenticator key, copy the TOTP verification code to your clip-board when you auto-fill the login."
   },
   "enableAutoBiometricsPrompt": {
     "message": "Ask for biometrics on launch"

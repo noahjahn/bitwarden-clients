@@ -63,12 +63,12 @@
     <div class="box">
       <div class="box-content">
         <div class="box-content-row box-content-row-checkbox" appBoxRow>
-          <label for="totp">{{ "disableAutoTotpCopy" | i18n }}</label>
+          <label for="totp">{{ "enableAutoTotpCopy" | i18n }}</label>
           <input
             id="totp"
             type="checkbox"
             (change)="updateAutoTotpCopy()"
-            [(ngModel)]="disableAutoTotpCopy"
+            [(ngModel)]="enableAutoTotpCopy"
           />
         </div>
       </div>
