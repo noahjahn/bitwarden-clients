@@ -19,7 +19,7 @@ export class OptionsComponent implements OnInit {
   autoFillOnPageLoadOptions: any[];
   enableAutoTotpCopy = false; // TODO: Does it matter if this is set to false or true?
   disableContextMenuItem = false;
-  disableAddLoginNotification = false;
+  enableAddLoginNotification = false;
   disableChangedPasswordNotification = false;
   dontShowCards = false;
   dontShowIdentities = false;
@@ -76,7 +76,7 @@ export class OptionsComponent implements OnInit {
     this.autoFillOnPageLoadDefault =
       (await this.stateService.getAutoFillOnPageLoadDefault()) ?? true;
 
-    this.disableAddLoginNotification = await this.stateService.getDisableAddLoginNotification();
+    this.enableAddLoginNotification = !(await this.stateService.getDisableAddLoginNotification());
 
     this.disableChangedPasswordNotification =
       await this.stateService.getDisableChangedPasswordNotification();
@@ -101,7 +101,7 @@ export class OptionsComponent implements OnInit {
   }
 
   async updateAddLoginNotification() {
-    await this.stateService.setDisableAddLoginNotification(this.disableAddLoginNotification);
+    await this.stateService.setDisableAddLoginNotification(!this.enableAddLoginNotification);
   }
 
   async updateChangedPasswordNotification() {

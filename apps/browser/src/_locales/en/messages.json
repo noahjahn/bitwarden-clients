@@ -567,11 +567,11 @@
     "message": "No Folder",
     "description": "This is the folder for uncategorized items"
   },
-  "disableAddLoginNotification": {
-    "message": "Disable Add Login Notification"
+  "enableAddLoginNotification": {
+    "message": "Ask to add new login"
   },
   "addLoginNotificationDesc": {
-    "message": "The \"Add Login Notification\" automatically prompts you to save new logins to your vault whenever you log into them for the first time."
+    "message": "Ask to add an item if one isn't found in your vault."
   },
   "dontShowCardsCurrentTab": {
     "message": "Don't Show Cards on Tab Page"
