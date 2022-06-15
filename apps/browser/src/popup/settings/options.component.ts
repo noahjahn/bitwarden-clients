@@ -21,7 +21,7 @@ export class OptionsComponent implements OnInit {
   enableContextMenuItem = false;
   enableAddLoginNotification = false;
   enableChangedPasswordNotification = false;
-  dontShowCards = false;
+  showCardsCurrentTab = false;
   dontShowIdentities = false;
   showClearClipboard = true;
   theme: ThemeType;
@@ -83,7 +83,7 @@ export class OptionsComponent implements OnInit {
 
     this.enableContextMenuItem = !(await this.stateService.getDisableContextMenuItem());
 
-    this.dontShowCards = await this.stateService.getDontShowCardsCurrentTab();
+    this.showCardsCurrentTab = !(await this.stateService.getDontShowCardsCurrentTab());
     this.dontShowIdentities = await this.stateService.getDontShowIdentitiesCurrentTab();
 
     this.enableAutoTotpCopy = !(await this.stateService.getDisableAutoTotpCopy());
@@ -136,8 +136,8 @@ export class OptionsComponent implements OnInit {
     this.messagingService.send("bgUpdateContextMenu");
   }
 
-  async updateShowCards() {
-    await this.stateService.setDontShowCardsCurrentTab(this.dontShowCards);
+  async updateShowCardsCurrentTab() {
+    await this.stateService.setDontShowCardsCurrentTab(!this.showCardsCurrentTab);
   }
 
   async updateShowIdentities() {
