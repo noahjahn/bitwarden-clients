@@ -20,7 +20,7 @@ export class OptionsComponent implements OnInit {
   enableAutoTotpCopy = false; // TODO: Does it matter if this is set to false or true?
   disableContextMenuItem = false;
   enableAddLoginNotification = false;
-  disableChangedPasswordNotification = false;
+  enableChangedPasswordNotification = false;
   dontShowCards = false;
   dontShowIdentities = false;
   showClearClipboard = true;
@@ -78,8 +78,8 @@ export class OptionsComponent implements OnInit {
 
     this.enableAddLoginNotification = !(await this.stateService.getDisableAddLoginNotification());
 
-    this.disableChangedPasswordNotification =
-      await this.stateService.getDisableChangedPasswordNotification();
+    this.enableChangedPasswordNotification =
+      !(await this.stateService.getDisableChangedPasswordNotification());
 
     this.disableContextMenuItem = await this.stateService.getDisableContextMenuItem();
 
@@ -106,7 +106,7 @@ export class OptionsComponent implements OnInit {
 
   async updateChangedPasswordNotification() {
     await this.stateService.setDisableChangedPasswordNotification(
-      this.disableChangedPasswordNotification
+      !this.enableChangedPasswordNotification
     );
   }
 

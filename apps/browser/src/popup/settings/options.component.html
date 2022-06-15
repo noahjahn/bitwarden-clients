@@ -92,17 +92,17 @@
       <div class="box-content">
         <div class="box-content-row box-content-row-checkbox" appBoxRow>
           <label for="changedpass-notification-bar">{{
-            "disableChangedPasswordNotification" | i18n
+            "enableChangedPasswordNotification" | i18n
           }}</label>
           <input
             id="changedpass-notification-bar"
             type="checkbox"
             (change)="updateChangedPasswordNotification()"
-            [(ngModel)]="disableChangedPasswordNotification"
+            [(ngModel)]="enableChangedPasswordNotification"
           />
         </div>
       </div>
-      <div class="box-footer">{{ "disableChangedPasswordNotificationDesc" | i18n }}</div>
+      <div class="box-footer">{{ "changedPasswordNotificationDesc" | i18n }}</div>
     </div>
     <div class="box">
       <div class="box-content">
