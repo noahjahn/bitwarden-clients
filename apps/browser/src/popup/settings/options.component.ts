@@ -18,7 +18,7 @@ export class OptionsComponent implements OnInit {
   autoFillOnPageLoadDefault = false;
   autoFillOnPageLoadOptions: any[];
   enableAutoTotpCopy = false; // TODO: Does it matter if this is set to false or true?
-  disableContextMenuItem = false;
+  enableContextMenuItem = false;
   enableAddLoginNotification = false;
   enableChangedPasswordNotification = false;
   dontShowCards = false;
@@ -81,7 +81,7 @@ export class OptionsComponent implements OnInit {
     this.enableChangedPasswordNotification =
       !(await this.stateService.getDisableChangedPasswordNotification());
 
-    this.disableContextMenuItem = await this.stateService.getDisableContextMenuItem();
+    this.enableContextMenuItem = !(await this.stateService.getDisableContextMenuItem());
 
     this.dontShowCards = await this.stateService.getDontShowCardsCurrentTab();
     this.dontShowIdentities = await this.stateService.getDontShowIdentitiesCurrentTab();
@@ -110,8 +110,8 @@ export class OptionsComponent implements OnInit {
     );
   }
 
-  async updateDisableContextMenuItem() {
-    await this.stateService.setDisableContextMenuItem(this.disableContextMenuItem);
+  async updateContextMenuItem() {
+    await this.stateService.setDisableContextMenuItem(!this.enableContextMenuItem);
     this.messagingService.send("bgUpdateContextMenu");
   }
 

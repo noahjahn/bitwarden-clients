@@ -611,11 +611,11 @@
   "notificationChangeSave": {
     "message": "Update"
   },
-  "disableContextMenuItem": {
-    "message": "Disable Context Menu Options"
+  "enableContextMenuItem": {
+    "message": "Show context menu options"
   },
-  "disableContextMenuItemDesc": {
-    "message": "Context menu options provide quick access to password generation and logins for the website in your current tab."
+  "contextMenuItemDesc": {
+    "message": "Use a secondary click to access password generation and matching logins for the website. "
   },
   "defaultUriMatchDetection": {
     "message": "Default URI Match Detection",
