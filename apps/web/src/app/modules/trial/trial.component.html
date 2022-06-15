@@ -1,8 +1,8 @@
 <div class="">
-  <header class="tw-bg-background-alt2 tw-text-white tw-h-16">
+  <header class="tw-bg-[#175ddc] tw-text-white tw-h-16">
     <div class="">
       <div
-        class="tw-bg-background-alt2 tw-content-[''] tw-h-64 tw-left-0 tw-absolute tw--top-20 tw--skew-y-3 tw-w-full tw--z-10"
+        class="tw-bg-[#175ddc] tw-content-[''] tw-h-64 tw-left-0 tw-absolute tw--top-20 tw--skew-y-3 tw-w-full tw--z-10"
       >
         <div class="tw-flex-wrap"></div>
       </div>
@@ -10,7 +10,7 @@
   </header>
 
   <div class="tw-flex tw-justify-center tw--mt-12">
-    <div class="tw-block min-w-min">
+    <div class="tw-block">
       <div>
         <img
           alt="Bitwarden"
@@ -21,7 +21,7 @@
       <div class="tw-pt-12">
         <!-- Teams Body -->
         <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'teams'">
-          <h1 class="!tw-text-contrast">You've chosen Bitwarden for Teams</h1>
+          <h1 class="!tw-text-[#ffff]">You've chosen Bitwarden for Teams</h1>
           <div class="tw-pt-20">
             <h2>
               Trusted by millions of individuals, teams, and organizations worldwide for secure
@@ -32,7 +32,7 @@
 
         <!-- Enterprise Body -->
         <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'enterprise'">
-          <h1 class="!tw-text-contrast">You've chosen Bitwarden for Enterprise</h1>
+          <h1 class="!tw-text-[#ffff]">You've chosen Bitwarden for Enterprise</h1>
           <div class="tw-pt-20">
             <h2>
               Trusted by millions of individuals, teams, and organizations worldwide for secure
@@ -43,7 +43,7 @@
 
         <!-- Families Body -->
         <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'families'">
-          <h1 class="!tw-text-contrast">You've chosen Bitwarden for Families</h1>
+          <h1 class="tw-text-[#ffff]">You've chosen Bitwarden for Families</h1>
           <div class="tw-pt-20">
             <h2>
               Trusted by millions of individuals, teams, and organizations worldwide for secure
@@ -54,50 +54,42 @@
       </div>
     </div>
     <div>
-      <div class="tw-w-[700px]">
-        <h1 class="" *ngIf="!layout">Start Trial</h1>
-        <div class="tw-block tw-pt-52">
-          <div
-            class="tw-rounded tw-border tw-border-solid tw-bg-background tw-border-secondary-300"
-          >
-            <div
-              class="tw-h-12 tw-flex tw-items-center tw-rounded-t !tw-bg-secondary-100 tw-w-full"
+      <div class="tw-w-[650px] tw-block tw-pt-56">
+        <div class="tw-rounded tw-border tw-border-solid tw-bg-background tw-border-secondary-300">
+          <div class="tw-h-12 tw-flex tw-items-center tw-rounded-t !tw-bg-secondary-100 tw-w-full">
+            <h2
+              class="tw-text-left tw-text-main tw-uppercase tw-pl-4 tw-text-base tw-mb-0 tw-font-bold"
             >
-              <h2
-                class="tw-text-left tw-text-main tw-uppercase tw-pl-4 tw-text-base tw-mb-0 tw-font-bold"
-              >
-                Start your 7-Day free trial of Bitwarden for {{ layout }}
-              </h2>
-            </div>
-            <app-vertical-stepper #stepper linear>
-              <app-vertical-step label="Create Account">
-                <p>This is content of "Step 1"</p>
-                <button bitButton buttonType="primary" cdkStepperNext>Next</button>
-              </app-vertical-step>
-              <app-vertical-step label="Create Organization" subLabel="It better be a good org">
-                <p>This is content of "Step 2"</p>
-                <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
-                <button bitButton buttonType="primary" cdkStepperNext>Next</button>
-              </app-vertical-step>
-              <app-vertical-step label="Billing">
-                <p>This is content of "Step 3"</p>
-                <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
-                <button bitButton buttonType="primary" cdkStepperNext>Next</button>
-              </app-vertical-step>
-              <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
-                <p>This is any content of "Step 4"</p>
-                <button
-                  bitButton
-                  buttonType="secondary"
-                  (click)="stepper.reset()"
-                  cdkStepperPrevious
-                >
-                  Reset stepper
-                </button>
-                <button bitButton buttonType="primary" cdkStepperNext>Complete</button>
-              </app-vertical-step>
-            </app-vertical-stepper>
+              Start your 7-Day free trial of Bitwarden for {{ layout }}
+            </h2>
           </div>
+          <app-vertical-stepper #stepper linear>
+            <app-vertical-step label="Create Account">
+              <!-- Replace content with Registration step -->
+              <p>This is content of "Step 1"</p>
+              <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+            </app-vertical-step>
+            <app-vertical-step label="Create Organization" subLabel="It better be a good org">
+              <!-- Replace with Org creation step -->
+              <p>This is content of "Step 2"</p>
+              <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
+              <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+            </app-vertical-step>
+            <app-vertical-step label="Billing">
+              <!-- Replace with Billing step -->
+              <p>This is content of "Step 3"</p>
+              <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
+              <button bitButton buttonType="primary" cdkStepperNext>Next</button>
+            </app-vertical-step>
+            <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
+              <!-- Replace with Confirmation details step -->
+              <p>This is any content of "Step 4"</p>
+              <button bitButton buttonType="secondary" (click)="stepper.reset()" cdkStepperPrevious>
+                Reset stepper
+              </button>
+              <button bitButton buttonType="primary" cdkStepperNext>Complete</button>
+            </app-vertical-step>
+          </app-vertical-stepper>
         </div>
       </div>
     </div>
