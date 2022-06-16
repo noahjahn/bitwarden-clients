@@ -4,18 +4,20 @@
       <div class="tw-w-74 tw-m-2.5 tw-text-center tw-h-16">
         <button
           (click)="selectStepByIndex(i)"
-          class="!tw-w-full tw-h-full tw-flex tw-border-none tw-cursor-pointer tw-bg-transparent tw-items-center tw-flex-row tw-max"
+          class="!tw-w-full tw-h-full tw-flex tw-border-none tw-cursor-pointer tw-bg-transparent tw-items-center tw-flex-row tw-max !tw-cursor-default"
           [ngClass]="{
-            'hover:tw-bg-secondary-100': !isLast && isFinalStepDisabled()
+            'hover:tw-bg-secondary-100 !tw-cursor-pointer': !isStepDisabled(i) && step.editable
           }"
+          [attr.aria-expanded]="selectedIndex === i"
         >
           <span
             class="tw-rounded-full tw-flex-row tw-font-bold tw-leading-9 tw-mr-3.5 tw-items-center !tw-w-9"
             *ngIf="!step.completed"
             [ngClass]="{
               '!tw-text-contrast !tw-bg-primary-500': selectedIndex === i,
-              '!tw-text-main !tw-bg-secondary-300': selectedIndex !== i && !isLast,
-              '!tw-text-muted !tw-bg-transparent': isLast && isFinalStepDisabled()
+              '!tw-text-main !tw-bg-secondary-300':
+                selectedIndex !== i && !isStepDisabled(i) && step.editable,
+              '!tw-text-muted !tw-bg-transparent': isStepDisabled(i)
             }"
           >
             {{ i + 1 }}
@@ -55,7 +57,6 @@
         class="tw-pl-7 tw-inline-block"
         *ngIf="selectedIndex === i"
         [ngTemplateOutlet]="selected ? selected.content : null"
-        [attr.aria-expanded]="selectedIndex === i"
       ></div>
       <div
         class="tw-h-6 tw-ml-8 tw-border-l-[1px] tw-border-r-0 tw-border-y-0 tw-border-solid tw-border-secondary-300"

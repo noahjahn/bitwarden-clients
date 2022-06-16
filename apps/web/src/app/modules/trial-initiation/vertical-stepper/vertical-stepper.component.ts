@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { CdkStepper } from "@angular/cdk/stepper";
 
 @Component({
@@ -14,21 +14,19 @@ export class VerticalStepperComponent extends CdkStepper {
     return !(this.steps.length === this.selectedIndex + 1);
   }
 
-  isFinalStepDisabled() {
-    let completedSteps = 0;
-    this.steps.forEach((s) => {
-      if (s.completed) {
-        completedSteps++;
+  isStepDisabled(index: number) {
+    if (this.selectedIndex !== index) {
+      if (this.linear) {
+        return this.selectedIndex === index - 1
+          ? !this.steps.find((_, i) => i == index - 1)?.completed
+          : true;
       }
-    });
-    if (completedSteps >= this.steps.length - 1) {
-      return false;
+      let step = this.steps.find((_, i) => i == index);
+      return step?.editable && step?.completed;
     }
-    return true;
   }
 
   selectStepByIndex(index: number): void {
     this.selectedIndex = index;
-    console.log(this.selected);
   }
 }

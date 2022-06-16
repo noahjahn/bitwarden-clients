@@ -66,7 +66,7 @@ const routes: Routes = [
         path: "trial",
         component: TrialInitiationComponent,
         canActivate: [],
-        data: { titleId: "createAccount" },
+        data: { titleId: "startTrial" },
       },
       {
         path: "sso",
