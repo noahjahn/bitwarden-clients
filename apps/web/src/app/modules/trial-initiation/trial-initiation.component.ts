@@ -17,8 +17,18 @@ export class TrialInitiationComponent implements OnInit {
       if (qParams.email != null && qParams.email.indexOf("@") > -1) {
         this.email = qParams.email;
       }
-      if (qParams.layout != null) {
-        this.layout = qParams.layout;
+      switch (qParams.layout) {
+        case "families":
+          this.layout = "families";
+          break;
+        case "enterprise":
+        case "enterprise1":
+        case "enterprise2":
+          this.layout = "enterprise";
+          break;
+        default:
+          this.layout = "teams";
+          break;
       }
     });
   }
