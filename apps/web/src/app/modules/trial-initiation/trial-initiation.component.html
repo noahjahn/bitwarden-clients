@@ -68,17 +68,7 @@
             <app-vertical-step #step1 label="Create Account" [editable]="false">
               <!-- Replace content with Registration step -->
               <p>This is content of "Step 1" that has editable set to false</p>
-              <button
-                *ngIf="!step1.completed"
-                bitButton
-                buttonType="primary"
-                (click)="step1.completed = true"
-              >
-                Complete step
-              </button>
-              <button *ngIf="step1.completed" bitButton buttonType="primary" cdkStepperNext>
-                Next
-              </button>
+              <button bitButton buttonType="primary" cdkStepperNext>Complete step</button>
             </app-vertical-step>
             <app-vertical-step
               #step2
@@ -87,33 +77,13 @@
             >
               <!-- Replace with Org creation step -->
               <p>This is content of "Step 2"</p>
-              <button
-                *ngIf="!step2.completed"
-                bitButton
-                buttonType="primary"
-                (click)="step2.completed = true"
-              >
-                Complete step
-              </button>
-              <button *ngIf="step2.completed" bitButton buttonType="primary" cdkStepperNext>
-                Next
-              </button>
+              <button bitButton buttonType="primary" cdkStepperNext>Complete step</button>
             </app-vertical-step>
             <app-vertical-step #step3 label="Billing">
               <!-- Replace with Billing step -->
               <p>This is content of "Step 3"</p>
               <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
-              <button
-                *ngIf="!step3.completed"
-                bitButton
-                buttonType="primary"
-                (click)="step3.completed = true"
-              >
-                Complete step
-              </button>
-              <button *ngIf="step3.completed" bitButton buttonType="primary" cdkStepperNext>
-                Next
-              </button>
+              <button bitButton buttonType="primary" cdkStepperNext>Complete step</button>
             </app-vertical-step>
             <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
               <!-- Replace with Confirmation details step -->

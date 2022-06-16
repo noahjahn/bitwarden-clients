@@ -24,6 +24,7 @@ export class VerticalStepperComponent extends CdkStepper {
       let step = this.steps.find((_, i) => i == index);
       return step?.editable && step?.completed;
     }
+    return false;
   }
 
   selectStepByIndex(index: number): void {
