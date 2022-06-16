@@ -1158,14 +1158,14 @@
     "message": "Show a recognizable image next to each login."
   },
   "enableGravatars": {
-    "message": "Enable Gravatars",
+    "message": "Show gravatars",
     "description": "'Gravatar' is the name of a service. See www.gravatar.com"
   },
   "enableGravatarsDesc": {
     "message": "Use avatar images loaded from gravatar.com."
   },
   "enableFullWidth": {
-    "message": "Enable Full Width Layout",
+    "message": "Display full width",
     "description": "Allows scaling the web vault UI's width"
   },
   "enableFullWidthDesc": {
