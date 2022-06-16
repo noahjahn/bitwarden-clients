@@ -4,7 +4,7 @@ import { LooseComponentsModule } from "./modules/loose-components.module";
 import { OrganizationManageModule } from "./modules/organizations/manage/organization-manage.module";
 import { OrganizationUserModule } from "./modules/organizations/users/organization-user.module";
 import { PipesModule } from "./modules/pipes/pipes.module";
-import { TrialModule } from "./modules/trial/trial.module";
+import { TrialInitiationModule } from "./modules/trial-initiation/trial-initiation.module";
 import { SharedModule } from "./modules/shared.module";
 import { VaultFilterModule } from "./modules/vault-filter/vault-filter.module";
 import { OrganizationBadgeModule } from "./modules/vault/modules/organization-badge/organization-badge.module";
@@ -13,7 +13,7 @@ import { OrganizationBadgeModule } from "./modules/vault/modules/organization-ba
   imports: [
     SharedModule,
     LooseComponentsModule,
-    TrialModule,
+    TrialInitiationModule,
     VaultFilterModule,
     OrganizationBadgeModule,
     PipesModule,
@@ -22,7 +22,7 @@ import { OrganizationBadgeModule } from "./modules/vault/modules/organization-ba
   ],
   exports: [
     LooseComponentsModule,
-    TrialModule,
+    TrialInitiationModule,
     VaultFilterModule,
     OrganizationBadgeModule,
     PipesModule,

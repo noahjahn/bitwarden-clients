@@ -1,16 +1,16 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { first } from "rxjs";
 
 @Component({
   selector: "app-trial",
-  templateUrl: "trial.component.html",
+  templateUrl: "trial-initiation.component.html",
 })
-export class TrialComponent implements OnInit {
+export class TrialInitiationComponent implements OnInit {
   layout = "";
   email = "";
 
-  constructor(router: Router, private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.queryParams.pipe(first()).subscribe((qParams) => {

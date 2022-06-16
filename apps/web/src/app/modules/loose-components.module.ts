@@ -161,7 +161,7 @@ import { FolderAddEditComponent } from "../vault/folder-add-edit.component";
 import { ShareComponent } from "../vault/share.component";
 
 import { PipesModule } from "./pipes/pipes.module";
-import { TrialModule } from "./trial/trial.module";
+import { TrialInitiationModule } from "./trial-initiation/trial-initiation.module";
 import { SharedModule } from "./shared.module";
 import { VaultFilterModule } from "./vault-filter/vault-filter.module";
 import { OrganizationBadgeModule } from "./vault/modules/organization-badge/organization-badge.module";
@@ -169,7 +169,13 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
 // Please do not add to this list of declarations - we should refactor these into modules when doing so makes sense until there are none left.
 // If you are building new functionality, please create or extend a feature module instead.
 @NgModule({
-  imports: [SharedModule, VaultFilterModule, OrganizationBadgeModule, PipesModule, TrialModule],
+  imports: [
+    SharedModule,
+    VaultFilterModule,
+    OrganizationBadgeModule,
+    PipesModule,
+    TrialInitiationModule,
+  ],
   declarations: [
     PremiumBadgeComponent,
     AcceptEmergencyComponent,
