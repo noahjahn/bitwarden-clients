@@ -41,7 +41,6 @@ import { SecurityRoutingModule } from "./settings/security-routing.module";
 import { SettingsComponent } from "./settings/settings.component";
 import { SponsoredFamiliesComponent } from "./settings/sponsored-families.component";
 import { SubscriptionRoutingModule } from "./settings/subscription-routing.module";
-import { ExportComponent } from "./tools/export.component";
 import { GeneratorComponent } from "./tools/generator.component";
 import { ToolsComponent } from "./tools/tools.component";
 
@@ -215,11 +214,10 @@ const routes: Routes = [
         children: [
           { path: "", pathMatch: "full", redirectTo: "generator" },
           {
-            path: "import",
+            path: "",
             loadChildren: () =>
               import("./importers/importer.module").then((m) => m.ImportersModule),
           },
-          { path: "export", component: ExportComponent, data: { titleId: "exportVault" } },
           {
             path: "generator",
             component: GeneratorComponent,

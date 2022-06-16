@@ -3,38 +3,17 @@ import { Router } from "@angular/router";
 import * as JSZip from "jszip";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 
-import { ApiService } from "@bitwarden/common/abstractions/api.service";
-import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
-import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
-import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
-import { FolderService } from "@bitwarden/common/abstractions/folder.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { ImportService as ImportServiceAbstraction } from "@bitwarden/common/abstractions/import.service";
+import { ImportService } from "@bitwarden/common/abstractions/import.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
 import { ImportOption, ImportType } from "@bitwarden/common/enums/importOptions";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
-import { ImportService } from "@bitwarden/common/services/import.service";
 
 @Component({
   selector: "app-import",
   templateUrl: "import.component.html",
-  providers: [
-    {
-      provide: ImportServiceAbstraction,
-      useClass: ImportService,
-      deps: [
-        CipherService,
-        FolderService,
-        ApiService,
-        I18nService,
-        CollectionService,
-        PlatformUtilsService,
-        CryptoService,
-      ],
-    },
-  ],
 })
 export class ImportComponent implements OnInit {
   featuredImportOptions: ImportOption[];
@@ -50,7 +29,7 @@ export class ImportComponent implements OnInit {
 
   constructor(
     protected i18nService: I18nService,
-    protected importService: ImportServiceAbstraction,
+    protected importService: ImportService,
     protected router: Router,
     protected platformUtilsService: PlatformUtilsService,
     protected policyService: PolicyService,

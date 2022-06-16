@@ -20,7 +20,6 @@ import { OrganizationBillingComponent } from "./settings/organization-billing.co
 import { OrganizationSubscriptionComponent } from "./settings/organization-subscription.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { TwoFactorSetupComponent } from "./settings/two-factor-setup.component";
-import { ExportComponent } from "./tools/export.component";
 import { ExposedPasswordsReportComponent } from "./tools/exposed-passwords-report.component";
 import { InactiveTwoFactorReportComponent } from "./tools/inactive-two-factor-report.component";
 import { ReusedPasswordsReportComponent } from "./tools/reused-passwords-report.component";
@@ -53,23 +52,12 @@ const routes: Routes = [
             pathMatch: "full",
             redirectTo: "import",
           },
-          /*{
-            path: "import",
-            component: ImportComponent,
-            canActivate: [PermissionsGuard],
-            data: {
-              titleId: "importData",
-              permissions: [Permissions.AccessImportExport],
-            },
-          },*/
           {
-            path: "export",
-            component: ExportComponent,
-            canActivate: [PermissionsGuard],
-            data: {
-              titleId: "exportVault",
-              permissions: [Permissions.AccessImportExport],
-            },
+            path: "",
+            loadChildren: () =>
+              import("../org-importers/org-importer.module").then(
+                (m) => m.OrganizationImportersModule
+              ),
           },
           {
             path: "exposed-passwords-report",
