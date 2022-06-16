@@ -4,6 +4,8 @@ import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
 import { Permissions } from "@bitwarden/common/enums/permissions";
 
+import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
+
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { CollectionsComponent } from "./manage/collections.component";
@@ -20,7 +22,6 @@ import { SettingsComponent } from "./settings/settings.component";
 import { TwoFactorSetupComponent } from "./settings/two-factor-setup.component";
 import { ExportComponent } from "./tools/export.component";
 import { ExposedPasswordsReportComponent } from "./tools/exposed-passwords-report.component";
-import { ImportComponent } from "./tools/import.component";
 import { InactiveTwoFactorReportComponent } from "./tools/inactive-two-factor-report.component";
 import { ReusedPasswordsReportComponent } from "./tools/reused-passwords-report.component";
 import { ToolsComponent } from "./tools/tools.component";
@@ -39,9 +40,7 @@ const routes: Routes = [
       { path: "", pathMatch: "full", redirectTo: "vault" },
       {
         path: "vault",
-        loadChildren: async () =>
-          (await import("../modules/vault/modules/organization-vault/organization-vault.module"))
-            .OrganizationVaultModule,
+        loadChildren: () => OrganizationVaultModule,
       },
       {
         path: "tools",
@@ -54,7 +53,7 @@ const routes: Routes = [
             pathMatch: "full",
             redirectTo: "import",
           },
-          {
+          /*{
             path: "import",
             component: ImportComponent,
             canActivate: [PermissionsGuard],
@@ -62,7 +61,7 @@ const routes: Routes = [
               titleId: "importData",
               permissions: [Permissions.AccessImportExport],
             },
-          },
+          },*/
           {
             path: "export",
             component: ExportComponent,

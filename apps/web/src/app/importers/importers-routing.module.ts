@@ -1,12 +1,13 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { ProvidersModule } from "./providers/providers.module";
+import { ImportComponent } from "./import.component";
 
 const routes: Routes = [
   {
-    path: "providers",
-    loadChildren: () => ProvidersModule,
+    path: "",
+    component: ImportComponent,
+    data: { titleId: "subscription" },
   },
 ];
 
@@ -14,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class ImportersRoutingModule {}
