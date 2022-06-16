@@ -24,7 +24,7 @@ import { SetPinComponent } from "../components/set-pin.component";
 export class SettingsComponent implements OnInit {
   vaultTimeoutAction: string;
   pin: boolean = null;
-  disableFavicons = false;
+  enableFavicons = false;
   enableBrowserIntegration = false;
   enableBrowserIntegrationFingerprint = false;
   enableMinToTray = false;
@@ -179,7 +179,7 @@ export class SettingsComponent implements OnInit {
     this.pin = pinSet[0] || pinSet[1];
 
     // Account preferences
-    this.disableFavicons = await this.stateService.getDisableFavicon();
+    this.enableFavicons = !(await this.stateService.getDisableFavicon());
     this.enableBrowserIntegration = await this.stateService.getEnableBrowserIntegration();
     this.enableBrowserIntegrationFingerprint =
       await this.stateService.getEnableBrowserIntegrationFingerprint();
@@ -278,8 +278,8 @@ export class SettingsComponent implements OnInit {
   }
 
   async saveFavicons() {
-    await this.stateService.setDisableFavicon(this.disableFavicons);
-    await this.stateService.setDisableFavicon(this.disableFavicons, {
+    await this.stateService.setDisableFavicon(!this.enableFavicons);
+    await this.stateService.setDisableFavicon(!this.enableFavicons, {
       storageLocation: StorageLocation.Disk,
     });
     this.messagingService.send("refreshCiphers");
