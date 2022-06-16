@@ -1151,11 +1151,11 @@
   "languageDesc": {
     "message": "Change the language used by the web vault."
   },
-  "disableIcons": {
-    "message": "Disable Website Icons"
+  "enableFavicon": {
+    "message": "Show website icons"
   },
-  "disableIconsDesc": {
-    "message": "Website Icons provide a recognizable image next to each login item in your vault."
+  "faviconDesc": {
+    "message": "Show a recognizable image next to each login."
   },
   "enableGravatars": {
     "message": "Enable Gravatars",
