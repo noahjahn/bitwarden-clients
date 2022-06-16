@@ -19,7 +19,7 @@ export default abstract class AbstractChromeStorageService implements AbstractSt
     return (await this.get(key)) != null;
   }
 
-  async save(key: string, obj: any): Promise<any> {
+  async save(key: string, obj: any): Promise<void> {
     if (obj == null) {
       // Fix safari not liking null in set
       return new Promise<void>((resolve) => {
@@ -41,7 +41,7 @@ export default abstract class AbstractChromeStorageService implements AbstractSt
     });
   }
 
-  async remove(key: string): Promise<any> {
+  async remove(key: string): Promise<void> {
     return new Promise<void>((resolve) => {
       this.chromeStorageApi.remove(key, () => {
         resolve();
