@@ -1,5 +1,6 @@
 import * as bigInt from "big-integer";
 
+import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 import { CryptoService as CryptoServiceAbstraction } from "../abstractions/crypto.service";
 import { CryptoFunctionService } from "../abstractions/cryptoFunction.service";
 import { LogService } from "../abstractions/log.service";
@@ -23,6 +24,7 @@ import { ProfileProviderResponse } from "../models/response/profileProviderRespo
 export class CryptoService implements CryptoServiceAbstraction {
   constructor(
     private cryptoFunctionService: CryptoFunctionService,
+    private encryptService: AbstractEncryptService,
     protected platformUtilService: PlatformUtilsService,
     protected logService: LogService,
     protected stateService: StateService
@@ -504,22 +506,9 @@ export class CryptoService implements CryptoServiceAbstraction {
   }
 
   async encrypt(plainValue: string | ArrayBuffer, key?: SymmetricCryptoKey): Promise<EncString> {
-    if (plainValue == null) {
-      return Promise.resolve(null);
-    }
+    key = await this.getKeyForEncryption(key);
 
-    let plainBuf: ArrayBuffer;
-    if (typeof plainValue === "string") {
-      plainBuf = Utils.fromUtf8ToArray(plainValue).buffer;
-    } else {
-      plainBuf = plainValue;
-    }
-
-    const encObj = await this.aesEncrypt(plainBuf, key);
-    const iv = Utils.fromBufferToB64(encObj.iv);
-    const data = Utils.fromBufferToB64(encObj.data);
-    const mac = encObj.mac != null ? Utils.fromBufferToB64(encObj.mac) : null;
-    return new EncString(encObj.key.encType, data, iv, mac);
+    return await this.encryptService.encrypt(plainValue, key);
   }
 
   async encryptToBytes(plainValue: ArrayBuffer, key?: SymmetricCryptoKey): Promise<EncArrayBuffer> {
@@ -618,13 +607,8 @@ export class CryptoService implements CryptoServiceAbstraction {
   }
 
   async decryptToUtf8(encString: EncString, key?: SymmetricCryptoKey): Promise<string> {
-    return await this.aesDecryptToUtf8(
-      encString.encryptionType,
-      encString.data,
-      encString.iv,
-      encString.mac,
-      key
-    );
+    key = await this.getKeyForEncryption(key);
+    return await this.encryptService.decryptToUtf8(encString, key);
   }
 
   async decryptFromBytes(encBuf: ArrayBuffer, key: SymmetricCryptoKey): Promise<ArrayBuffer> {

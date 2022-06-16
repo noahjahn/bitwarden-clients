@@ -1,5 +1,6 @@
 import { InjectionToken, Injector, LOCALE_ID, NgModule } from "@angular/core";
 
+import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstractions/api.service";
 import { AppIdService as AppIdServiceAbstraction } from "@bitwarden/common/abstractions/appId.service";
 import { AuditService as AuditServiceAbstraction } from "@bitwarden/common/abstractions/audit.service";
@@ -49,6 +50,7 @@ import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { CollectionService } from "@bitwarden/common/services/collection.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
+import { EncryptService } from "@bitwarden/common/services/encrypt.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { EventService } from "@bitwarden/common/services/event.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
@@ -232,6 +234,7 @@ export const SYSTEM_LANGUAGE = new InjectionToken<string>("SYSTEM_LANGUAGE");
       useClass: CryptoService,
       deps: [
         CryptoFunctionServiceAbstraction,
+        AbstractEncryptService,
         PlatformUtilsServiceAbstraction,
         LogService,
         StateServiceAbstraction,
@@ -361,6 +364,11 @@ export const SYSTEM_LANGUAGE = new InjectionToken<string>("SYSTEM_LANGUAGE");
       provide: CryptoFunctionServiceAbstraction,
       useClass: WebCryptoFunctionService,
       deps: [WINDOW],
+    },
+    {
+      provide: AbstractEncryptService,
+      useClass: EncryptService,
+      deps: [CryptoFunctionServiceAbstraction, LogService],
     },
     {
       provide: EventServiceAbstraction,

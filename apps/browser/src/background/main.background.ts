@@ -47,6 +47,7 @@ import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { CollectionService } from "@bitwarden/common/services/collection.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
+import { EncryptService } from "@bitwarden/common/services/encrypt.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { EventService } from "@bitwarden/common/services/event.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
@@ -81,11 +82,12 @@ import { StateService as StateServiceAbstraction } from "../services/abstraction
 import AutofillService from "../services/autofill.service";
 import { BrowserCryptoService } from "../services/browserCrypto.service";
 import BrowserLocalStorageService from "../services/browserLocalStorage.service";
-import BrowserMemoryStorageService from "../services/browserMemoryStorage.service";
 import BrowserMessagingService from "../services/browserMessaging.service";
 import BrowserMessagingPrivateModeBackgroundService from "../services/browserMessagingPrivateModeBackground.service";
 import BrowserPlatformUtilsService from "../services/browserPlatformUtils.service";
 import I18nService from "../services/i18n.service";
+import { KeyGenerationService } from "../services/keyGeneration.service";
+import { LocalBackedSessionStorageService } from "../services/localBackedSessionStorage.service";
 import { StateService } from "../services/state.service";
 import { VaultFilterService } from "../services/vaultFilter.service";
 import VaultTimeoutService from "../services/vaultTimeout.service";
@@ -184,13 +186,17 @@ export default class MainBackground {
     this.messagingService = isPrivateMode
       ? new BrowserMessagingPrivateModeBackgroundService()
       : new BrowserMessagingService();
+    this.logService = new ConsoleLogService(false);
+    this.cryptoFunctionService = new WebCryptoFunctionService(window);
     this.storageService = new BrowserLocalStorageService();
     this.secureStorageService = new BrowserLocalStorageService();
     this.memoryStorageService =
       chrome.runtime.getManifest().manifest_version == 3
-        ? new BrowserMemoryStorageService()
+        ? new LocalBackedSessionStorageService(
+            new EncryptService(this.cryptoFunctionService, this.logService),
+            new KeyGenerationService(this.cryptoFunctionService)
+          )
         : new MemoryStorageService();
-    this.logService = new ConsoleLogService(false);
     this.stateMigrationService = new StateMigrationService(
       this.storageService,
       this.secureStorageService,
@@ -227,9 +233,9 @@ export default class MainBackground {
       }
     );
     this.i18nService = new I18nService(BrowserApi.getUILanguage(window));
-    this.cryptoFunctionService = new WebCryptoFunctionService(window);
     this.cryptoService = new BrowserCryptoService(
       this.cryptoFunctionService,
+      new EncryptService(this.cryptoFunctionService, this.logService),
       this.platformUtilsService,
       this.logService,
       this.stateService
