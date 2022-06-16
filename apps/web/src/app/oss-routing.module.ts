@@ -65,7 +65,7 @@ const routes: Routes = [
       {
         path: "trial",
         component: TrialInitiationComponent,
-        canActivate: [],
+        canActivate: [UnauthGuard],
         data: { titleId: "startTrial" },
       },
       {
