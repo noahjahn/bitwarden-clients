@@ -10,6 +10,7 @@ import { StorageLocation } from "../enums/storageLocation";
 import { ThemeType } from "../enums/themeType";
 import { UriMatchType } from "../enums/uriMatchType";
 import { StateFactory } from "../factories/stateFactory";
+import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
 import { CollectionData } from "../models/data/collectionData";
 import { EventData } from "../models/data/eventData";
@@ -470,7 +471,7 @@ export class StateService<
     );
   }
 
-  @withPrototype(SymmetricCryptoKey)
+  @withPrototype(SymmetricCryptoKey, SymmetricCryptoKey.initFromJson)
   async getCryptoMasterKey(options?: StorageOptions): Promise<SymmetricCryptoKey> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
@@ -624,7 +625,7 @@ export class StateService<
     );
   }
 
-  @withPrototype(SymmetricCryptoKey)
+  @withPrototype(SymmetricCryptoKey, SymmetricCryptoKey.initFromJson)
   async getDecryptedCryptoSymmetricKey(options?: StorageOptions): Promise<SymmetricCryptoKey> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
@@ -663,13 +664,14 @@ export class StateService<
     );
   }
 
-  @withPrototypeForMap(SymmetricCryptoKey)
+  @withPrototypeForMap(SymmetricCryptoKey, SymmetricCryptoKey.initFromJson)
   async getDecryptedOrganizationKeys(
     options?: StorageOptions
   ): Promise<Map<string, SymmetricCryptoKey>> {
-    return (
-      await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
-    )?.keys?.organizationKeys?.decrypted;
+    const account = await this.getAccount(
+      this.reconcileOptions(options, await this.defaultInMemoryOptions())
+    );
+    return account?.keys?.organizationKeys?.decrypted;
   }
 
   async setDecryptedOrganizationKeys(
@@ -745,11 +747,15 @@ export class StateService<
     );
   }
 
-  // @withPrototype(ArrayBuffer)
   async getDecryptedPrivateKey(options?: StorageOptions): Promise<ArrayBuffer> {
-    return (
+    const privateKey = (
       await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
-    )?.keys?.privateKey?.decrypted;
+    )?.keys?.privateKey;
+    let result = privateKey?.decrypted;
+    if (result == null && privateKey?.decryptedSerialized != null) {
+      result = Utils.fromByteStringToArray(privateKey.decryptedSerialized);
+    }
+    return result;
   }
 
   async setDecryptedPrivateKey(value: ArrayBuffer, options?: StorageOptions): Promise<void> {
@@ -757,13 +763,15 @@ export class StateService<
       this.reconcileOptions(options, await this.defaultInMemoryOptions())
     );
     account.keys.privateKey.decrypted = value;
+    account.keys.privateKey.decryptedSerialized =
+      value == null ? null : Utils.fromBufferToByteString(value);
     await this.saveAccount(
       account,
       this.reconcileOptions(options, await this.defaultInMemoryOptions())
     );
   }
 
-  @withPrototypeForMap(SymmetricCryptoKey)
+  @withPrototypeForMap(SymmetricCryptoKey, SymmetricCryptoKey.initFromJson)
   async getDecryptedProviderKeys(
     options?: StorageOptions
   ): Promise<Map<string, SymmetricCryptoKey>> {
@@ -1425,9 +1433,10 @@ export class StateService<
   }
 
   async getEncryptedPrivateKey(options?: StorageOptions): Promise<string> {
-    return (
-      await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskOptions()))
-    )?.keys?.privateKey?.encrypted;
+    const account = await this.getAccount(
+      this.reconcileOptions(options, await this.defaultOnDiskOptions())
+    );
+    return account?.keys?.privateKey?.encrypted;
   }
 
   async setEncryptedPrivateKey(value: string, options?: StorageOptions): Promise<void> {
@@ -1724,7 +1733,7 @@ export class StateService<
     );
   }
 
-  @withPrototype(SymmetricCryptoKey)
+  @withPrototype(SymmetricCryptoKey, SymmetricCryptoKey.initFromJson)
   async getLegacyEtmKey(options?: StorageOptions): Promise<SymmetricCryptoKey> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskOptions()))
@@ -2006,11 +2015,15 @@ export class StateService<
     );
   }
 
-  // @withPrototype(ArrayBuffer)
   async getPublicKey(options?: StorageOptions): Promise<ArrayBuffer> {
-    return (
+    const keys = (
       await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
-    )?.keys?.publicKey;
+    )?.keys;
+    let result = keys?.publicKey;
+    if (result == null && keys?.publicKeySerialized != null) {
+      result = Utils.fromByteStringToArray(keys.publicKeySerialized);
+    }
+    return result;
   }
 
   async setPublicKey(value: ArrayBuffer, options?: StorageOptions): Promise<void> {
@@ -2018,6 +2031,7 @@ export class StateService<
       this.reconcileOptions(options, await this.defaultInMemoryOptions())
     );
     account.keys.publicKey = value;
+    account.keys.publicKeySerialized = value == null ? null : Utils.fromBufferToByteString(value);
     await this.saveAccount(
       account,
       this.reconcileOptions(options, await this.defaultInMemoryOptions())
@@ -2724,7 +2738,8 @@ export class StateService<
 }
 
 export function withPrototype<T>(
-  constructor: new (...args: any[]) => T
+  constructor: new (...args: any[]) => T,
+  converter: (input: T) => T = (i) => i
 ): (
   target: any,
   propertyKey: string | symbol,
@@ -2748,8 +2763,10 @@ export function withPrototype<T>(
         return originalResult.then((result) => {
           return result == null ||
             result.constructor.name === constructor.prototype.constructor.name
-            ? (result as T)
-            : (Object.create(constructor.prototype, Object.getOwnPropertyDescriptors(result)) as T);
+            ? converter(result as T)
+            : converter(
+                Object.create(constructor.prototype, Object.getOwnPropertyDescriptors(result)) as T
+              );
         });
       },
     };
@@ -2757,7 +2774,8 @@ export function withPrototype<T>(
 }
 
 function withPrototypeForArrayMembers<T>(
-  memberConstructor: new (...args: any[]) => T
+  memberConstructor: new (...args: any[]) => T,
+  memberConverter: (input: T) => T = (i) => i
 ): (
   target: any,
   propertyKey: string | symbol,
@@ -2791,8 +2809,10 @@ function withPrototypeForArrayMembers<T>(
             return result.map((r) => {
               return r == null ||
                 r.constructor.name === memberConstructor.prototype.constructor.name
-                ? r
-                : Object.create(memberConstructor.prototype, Object.getOwnPropertyDescriptors(r));
+                ? memberConverter(r)
+                : memberConverter(
+                    Object.create(memberConstructor.prototype, Object.getOwnPropertyDescriptors(r))
+                  );
             });
           }
         });
@@ -2802,7 +2822,8 @@ function withPrototypeForArrayMembers<T>(
 }
 
 function withPrototypeForObjectValues<T>(
-  valuesConstructor: new (...args: any[]) => T
+  valuesConstructor: new (...args: any[]) => T,
+  valuesConverter: (input: T) => T = (i) => i
 ): (
   target: any,
   propertyKey: string | symbol,
@@ -2830,10 +2851,12 @@ function withPrototypeForObjectValues<T>(
             for (const [key, val] of Object.entries(result)) {
               result[key] =
                 val == null || val.constructor.name === valuesConstructor.prototype.constructor.name
-                  ? val
-                  : Object.create(
-                      valuesConstructor.prototype,
-                      Object.getOwnPropertyDescriptors(val)
+                  ? valuesConverter(val)
+                  : valuesConverter(
+                      Object.create(
+                        valuesConstructor.prototype,
+                        Object.getOwnPropertyDescriptors(val)
+                      )
                     );
             }
 
@@ -2846,7 +2869,8 @@ function withPrototypeForObjectValues<T>(
 }
 
 function withPrototypeForMap<T>(
-  valueConstructor: new (...args: any[]) => T
+  valuesConstructor: new (...args: any[]) => T,
+  valuesConverter: (input: T) => T = (i) => i
 ): (
   target: any,
   propertyKey: string | symbol,
@@ -2876,11 +2900,13 @@ function withPrototypeForMap<T>(
             for (const key in Object.keys(result)) {
               result[key] =
                 result[key] == null ||
-                result[key].constructor.name === valueConstructor.prototype.constructor.name
-                  ? result[key]
-                  : Object.create(
-                      valueConstructor.prototype,
-                      Object.getOwnPropertyDescriptors(result[key])
+                result[key].constructor.name === valuesConstructor.prototype.constructor.name
+                  ? valuesConverter(result[key])
+                  : valuesConverter(
+                      Object.create(
+                        valuesConstructor.prototype,
+                        Object.getOwnPropertyDescriptors(result[key])
+                      )
                     );
             }
             return new Map<string, T>(Object.entries(result));
