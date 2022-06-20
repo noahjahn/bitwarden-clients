@@ -1,5 +1,6 @@
 import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
+import { sequentialize } from "@bitwarden/common/misc/sequentialize";
 import { EncString } from "@bitwarden/common/models/domain/encString";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
@@ -35,6 +36,7 @@ export class LocalBackedSessionStorageService extends AbstractStorageService {
     }
 
     this.cache.set(key, session[key]);
+    const val = this.cache.get(key);
     return this.cache.get(key);
   }
 
@@ -92,7 +94,9 @@ export class LocalBackedSessionStorageService extends AbstractStorageService {
       storedKey = await this.keyGenerationService.makeEphemeralKey();
       await this.setSessionEncKey(storedKey);
     }
-    return Object.create(SymmetricCryptoKey.prototype, Object.getOwnPropertyDescriptors(storedKey));
+    return SymmetricCryptoKey.initFromJson(
+      Object.create(SymmetricCryptoKey.prototype, Object.getOwnPropertyDescriptors(storedKey))
+    );
   }
 
   async setSessionEncKey(input: SymmetricCryptoKey): Promise<void> {

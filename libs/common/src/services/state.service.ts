@@ -58,6 +58,7 @@ export class StateService<
   activeAccount = new BehaviorSubject<string>(null);
 
   private hasBeenInited = false;
+  private isRecoveredSession = false;
 
   private accountDiskCache = new Map<string, TAccount>();
 
@@ -80,9 +81,11 @@ export class StateService<
       await this.stateMigrationService.migrate();
     }
 
-    await this.state.then(async (state) => {
+    await this.state().then(async (state) => {
       if (state == null) {
         await this.setState(new State<TGlobalState, TAccount>(this.createGlobals()));
+      } else {
+        this.isRecoveredSession = true;
       }
     });
     await this.initAccountState();
@@ -90,6 +93,12 @@ export class StateService<
   }
 
   async initAccountState() {
+    if (this.isRecoveredSession) {
+      console.log("already inited");
+      return;
+    }
+
+    console.log("made it past");
     await this.updateState(async (state) => {
       state.authenticatedAccounts =
         (await this.storageService.get<string[]>(keys.authenticatedAccounts)) ?? [];
@@ -104,6 +113,9 @@ export class StateService<
       }
       await this.pushAccounts();
       this.activeAccount.next(state.activeUserId);
+
+      console.log("updateing init state", state);
+      return state;
     });
   }
 
@@ -115,6 +127,7 @@ export class StateService<
       state.accounts[userId] = this.createAccount();
       const diskAccount = await this.getAccountFromDisk({ userId: userId });
       state.accounts[userId].profile = diskAccount.profile;
+      return state;
     });
   }
 
@@ -124,6 +137,7 @@ export class StateService<
       state.authenticatedAccounts.push(account.profile.userId);
       await this.storageService.save(keys.authenticatedAccounts, state.authenticatedAccounts);
       state.accounts[account.profile.userId] = account;
+      return state;
     });
     await this.scaffoldNewAccountStorage(account);
     await this.setLastActive(new Date().getTime(), { userId: account.profile.userId });
@@ -137,6 +151,7 @@ export class StateService<
       state.activeUserId = userId;
       await this.storageService.save(keys.activeUserId, userId);
       this.activeAccount.next(state.activeUserId);
+      return state;
     });
 
     await this.pushAccounts();
@@ -145,7 +160,7 @@ export class StateService<
   async clean(options?: StorageOptions): Promise<void> {
     options = this.reconcileOptions(options, await this.defaultInMemoryOptions());
     await this.deAuthenticateAccount(options.userId);
-    if (options.userId === (await this.state)?.activeUserId) {
+    if (options.userId === (await this.state())?.activeUserId) {
       await this.dynamicallySetActiveUser();
     }
 
@@ -1524,7 +1539,7 @@ export class StateService<
 
   @withPrototype(EnvironmentUrls)
   async getEnvironmentUrls(options?: StorageOptions): Promise<EnvironmentUrls> {
-    if ((await this.state)?.activeUserId == null) {
+    if ((await this.state())?.activeUserId == null) {
       return await this.getGlobalEnvironmentUrls(options);
     }
     options = this.reconcileOptions(options, await this.defaultOnDiskOptions());
@@ -2296,7 +2311,7 @@ export class StateService<
   }
 
   protected async getGlobalsFromMemory(): Promise<TGlobalState> {
-    return (await this.state).globals;
+    return (await this.state()).globals;
   }
 
   protected async getGlobalsFromDisk(options: StorageOptions): Promise<TGlobalState> {
@@ -2306,6 +2321,7 @@ export class StateService<
   protected async saveGlobalsToMemory(globals: TGlobalState): Promise<void> {
     await this.updateState(async (state) => {
       state.globals = globals;
+      return state;
     });
   }
 
@@ -2335,7 +2351,7 @@ export class StateService<
   }
 
   protected async getAccountFromMemory(options: StorageOptions): Promise<TAccount> {
-    return await this.state.then(async (state) => {
+    return await this.state().then(async (state) => {
       if (state.accounts == null) {
         return null;
       }
@@ -2344,7 +2360,7 @@ export class StateService<
   }
 
   protected async getUserIdFromMemory(options: StorageOptions): Promise<string> {
-    return await this.state.then((state) => {
+    return await this.state().then((state) => {
       return options?.userId != null
         ? state.accounts[options.userId]?.profile?.userId
         : state.activeUserId;
@@ -2352,7 +2368,7 @@ export class StateService<
   }
 
   protected async getAccountFromDisk(options: StorageOptions): Promise<TAccount> {
-    if (options?.userId == null && (await this.state)?.activeUserId == null) {
+    if (options?.userId == null && (await this.state())?.activeUserId == null) {
       return null;
     }
 
@@ -2412,7 +2428,10 @@ export class StateService<
   protected async saveAccountToMemory(account: TAccount): Promise<void> {
     if (this.getAccountFromMemory({ userId: account.profile.userId }) !== null) {
       await this.updateState((state) => {
-        state.accounts[account.profile.userId] = account;
+        return new Promise((resolve) => {
+          state.accounts[account.profile.userId] = account;
+          resolve(state);
+        });
       });
     }
     await this.pushAccounts();
@@ -2506,7 +2525,7 @@ export class StateService<
 
   protected async pushAccounts(): Promise<void> {
     await this.pruneInMemoryAccounts();
-    await this.state.then((state) => {
+    await this.state().then((state) => {
       if (state.accounts == null || Object.keys(state.accounts).length < 1) {
         this.accounts.next(null);
         return;
@@ -2537,7 +2556,7 @@ export class StateService<
   protected async defaultInMemoryOptions(): Promise<StorageOptions> {
     return {
       storageLocation: StorageLocation.Memory,
-      userId: (await this.state).activeUserId,
+      userId: (await this.state()).activeUserId,
     };
   }
 
@@ -2545,7 +2564,7 @@ export class StateService<
     return {
       storageLocation: StorageLocation.Disk,
       htmlStorageLocation: HtmlStorageLocation.Session,
-      userId: (await this.state)?.activeUserId ?? (await this.getActiveUserIdFromStorage()),
+      userId: (await this.state())?.activeUserId ?? (await this.getActiveUserIdFromStorage()),
       useSecureStorage: false,
     };
   }
@@ -2554,7 +2573,7 @@ export class StateService<
     return {
       storageLocation: StorageLocation.Disk,
       htmlStorageLocation: HtmlStorageLocation.Local,
-      userId: (await this.state)?.activeUserId ?? (await this.getActiveUserIdFromStorage()),
+      userId: (await this.state())?.activeUserId ?? (await this.getActiveUserIdFromStorage()),
       useSecureStorage: false,
     };
   }
@@ -2563,7 +2582,7 @@ export class StateService<
     return {
       storageLocation: StorageLocation.Disk,
       htmlStorageLocation: HtmlStorageLocation.Memory,
-      userId: (await this.state)?.activeUserId ?? (await this.getUserId()),
+      userId: (await this.state())?.activeUserId ?? (await this.getUserId()),
       useSecureStorage: false,
     };
   }
@@ -2572,7 +2591,7 @@ export class StateService<
     return {
       storageLocation: StorageLocation.Disk,
       useSecureStorage: true,
-      userId: (await this.state)?.activeUserId ?? (await this.getActiveUserIdFromStorage()),
+      userId: (await this.state())?.activeUserId ?? (await this.getActiveUserIdFromStorage()),
     };
   }
 
@@ -2581,7 +2600,7 @@ export class StateService<
   }
 
   protected async removeAccountFromLocalStorage(userId: string = null): Promise<void> {
-    userId = userId ?? (await this.state)?.activeUserId;
+    userId = userId ?? (await this.state())?.activeUserId;
     const storedAccount = await this.getAccount(
       this.reconcileOptions({ userId: userId }, await this.defaultOnDiskLocalOptions())
     );
@@ -2592,7 +2611,7 @@ export class StateService<
   }
 
   protected async removeAccountFromSessionStorage(userId: string = null): Promise<void> {
-    userId = userId ?? (await this.state)?.activeUserId;
+    userId = userId ?? (await this.state())?.activeUserId;
     const storedAccount = await this.getAccount(
       this.reconcileOptions({ userId: userId }, await this.defaultOnDiskOptions())
     );
@@ -2603,7 +2622,7 @@ export class StateService<
   }
 
   protected async removeAccountFromSecureStorage(userId: string = null): Promise<void> {
-    userId = userId ?? (await this.state)?.activeUserId;
+    userId = userId ?? (await this.state())?.activeUserId;
     await this.setCryptoMasterKeyAuto(null, { userId: userId });
     await this.setCryptoMasterKeyBiometric(null, { userId: userId });
     await this.setCryptoMasterKeyB64(null, { userId: userId });
@@ -2617,12 +2636,14 @@ export class StateService<
       if (this.useAccountCache) {
         this.accountDiskCache.delete(userId);
       }
+
+      return state;
     });
   }
 
   protected async pruneInMemoryAccounts() {
     // We preserve settings for logged out accounts, but we don't want to consider them when thinking about active account state
-    for (const userId in (await this.state)?.accounts) {
+    for (const userId in (await this.state())?.accounts) {
       if (!(await this.getIsAuthenticated({ userId: userId }))) {
         await this.removeAccountFromMemory(userId);
       }
@@ -2652,6 +2673,8 @@ export class StateService<
         return;
       }
       state.accounts[userId].data = new AccountData();
+
+      return state;
     });
   }
 
@@ -2670,6 +2693,8 @@ export class StateService<
       state.authenticatedAccounts = state.authenticatedAccounts.filter((id) => id !== userId);
 
       await this.storageService.save(keys.authenticatedAccounts, state.authenticatedAccounts);
+
+      return state;
     });
   }
 
@@ -2680,7 +2705,7 @@ export class StateService<
   }
 
   protected async dynamicallySetActiveUser() {
-    const accounts = (await this.state)?.accounts;
+    const accounts = (await this.state())?.accounts;
     if (accounts == null || Object.keys(accounts).length < 1) {
       await this.setActiveUser(null);
       return;
@@ -2713,7 +2738,7 @@ export class StateService<
       : await this.secureStorageService.save(`${options.userId}${key}`, value, options);
   }
 
-  protected get state(): Promise<State<TGlobalState, TAccount>> {
+  protected state(): Promise<State<TGlobalState, TAccount>> {
     return this.memoryStorageService.get<State<TGlobalState, TAccount>>(keys.state);
   }
 
@@ -2722,17 +2747,12 @@ export class StateService<
   }
 
   protected async updateState(
-    stateUpdater:
-      | ((state: State<TGlobalState, TAccount>) => Promise<void>)
-      | ((state: State<TGlobalState, TAccount>) => void)
+    stateUpdater: (state: State<TGlobalState, TAccount>) => Promise<State<TGlobalState, TAccount>>
   ) {
-    await this.state.then(async (state) => {
-      const result = stateUpdater(state);
-      if (result instanceof Promise) {
-        await result;
-      }
+    await this.state().then(async (state) => {
+      const updatedState = await stateUpdater(state);
 
-      await this.setState(state);
+      await this.setState(updatedState);
     });
   }
 }
