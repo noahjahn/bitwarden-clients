@@ -1,5 +1,4 @@
 export class FileDownloadRequest {
-  window: Window;
   fileName: string;
   forceDownload: boolean;
 
@@ -48,14 +47,7 @@ export class FileDownloadRequest {
     return null;
   }
 
-  constructor(
-    window: Window,
-    fileName: string,
-    blobData: any,
-    blobOptions?: any,
-    forceDownload = false
-  ) {
-    this.window = window;
+  constructor(fileName: string, blobData: any, blobOptions?: any, forceDownload = false) {
     this.fileName = fileName;
     this.blobData = blobData;
     this._blobOptions = blobOptions;

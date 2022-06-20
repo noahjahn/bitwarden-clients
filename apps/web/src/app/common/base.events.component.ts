@@ -177,7 +177,7 @@ export abstract class BaseEventsComponent {
     const data = await this.exportService.getEventExport(events);
     const fileName = this.exportService.getFileName(this.exportFileName, "csv");
     this.fileDownloadService.download(
-      new FileDownloadRequest(window, fileName, data, { type: "text/plain" })
+      new FileDownloadRequest(fileName, data, { type: "text/plain" })
     );
   }
 }

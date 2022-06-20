@@ -376,9 +376,7 @@ export class ViewComponent implements OnDestroy, OnInit {
           ? attachment.key
           : await this.cryptoService.getOrgKey(this.cipher.organizationId);
       const decBuf = await this.cryptoService.decryptFromBytes(buf, key);
-      this.fileDownloadService.download(
-        new FileDownloadRequest(this.win, attachment.fileName, decBuf)
-      );
+      this.fileDownloadService.download(new FileDownloadRequest(attachment.fileName, decBuf));
     } catch (e) {
       this.platformUtilsService.showToast("error", null, this.i18nService.t("errorOccurred"));
     }

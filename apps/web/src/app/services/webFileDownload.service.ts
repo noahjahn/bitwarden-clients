@@ -9,7 +9,7 @@ export class WebFileDownloadService implements FileDownloadService {
   constructor(private platformUtilsService: PlatformUtilsService) {}
 
   download(request: FileDownloadRequest): void {
-    const a = request.window.document.createElement("a");
+    const a = window.document.createElement("a");
     if (request.downloadMethod === "save") {
       a.download = request.fileName;
     } else if (!this.platformUtilsService.isSafari()) {
@@ -17,8 +17,8 @@ export class WebFileDownloadService implements FileDownloadService {
     }
     a.href = URL.createObjectURL(request.blob);
     a.style.position = "fixed";
-    request.window.document.body.appendChild(a);
+    window.document.body.appendChild(a);
     a.click();
-    request.window.document.body.removeChild(a);
+    window.document.body.removeChild(a);
   }
 }

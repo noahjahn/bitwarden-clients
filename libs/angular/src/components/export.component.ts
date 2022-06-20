@@ -154,7 +154,7 @@ export class ExportComponent implements OnInit {
   private downloadFile(csv: string): void {
     const fileName = this.getFileName();
     this.fileDownloadService.download(
-      new FileDownloadRequest(this.win, fileName, csv, { type: "text/plain" })
+      new FileDownloadRequest(fileName, csv, { type: "text/plain" })
     );
   }
 }

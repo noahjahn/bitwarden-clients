@@ -6,12 +6,12 @@ import { FileDownloadRequest } from "@bitwarden/common/models/domain/fileDownloa
 @Injectable()
 export class DesktopFileDownloadService implements FileDownloadService {
   download(request: FileDownloadRequest): void {
-    const a = request.window.document.createElement("a");
+    const a = window.document.createElement("a");
     a.href = URL.createObjectURL(request.blob);
     a.download = request.fileName;
     a.style.position = "fixed";
-    request.window.document.body.appendChild(a);
+    window.document.body.appendChild(a);
     a.click();
-    request.window.document.body.removeChild(a);
+    window.document.body.removeChild(a);
   }
 }

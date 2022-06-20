@@ -8,11 +8,6 @@ import { BrowserApi } from "../browser/browserApi";
 @Injectable()
 export class BrowserFileDownloadService implements FileDownloadService {
   download(request: FileDownloadRequest): void {
-    BrowserApi.downloadFile(
-      request.window,
-      request.blobData,
-      request.blobOptions,
-      request.fileName
-    );
+    BrowserApi.downloadFile(window, request.blobData, request.blobOptions, request.fileName);
   }
 }

@@ -143,7 +143,7 @@ export class UserSubscriptionComponent implements OnInit {
 
     const licenseString = JSON.stringify(this.sub.license, null, 2);
     this.fileDownloadService.download(
-      new FileDownloadRequest(window, "bitwarden_premium_license.json", licenseString)
+      new FileDownloadRequest("bitwarden_premium_license.json", licenseString)
     );
   }
 
