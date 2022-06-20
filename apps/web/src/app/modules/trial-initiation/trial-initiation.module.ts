@@ -3,7 +3,7 @@ import { SharedModule } from "../shared.module";
 import { CdkStepperModule } from "@angular/cdk/stepper";
 import { TrialInitiationComponent } from "./trial-initiation.component";
 
-import { VerticalStepperModule } from "./vertical-stepper/vertical-stepper.module";
+import { VerticalStepperModule } from "../vertical-stepper/vertical-stepper.module";
 import { FormFieldModule } from "@bitwarden/components";
 
 @NgModule({

@@ -169,13 +169,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
 // Please do not add to this list of declarations - we should refactor these into modules when doing so makes sense until there are none left.
 // If you are building new functionality, please create or extend a feature module instead.
 @NgModule({
-  imports: [
-    SharedModule,
-    VaultFilterModule,
-    OrganizationBadgeModule,
-    PipesModule,
-    TrialInitiationModule,
-  ],
+  imports: [SharedModule, VaultFilterModule, OrganizationBadgeModule, PipesModule],
   declarations: [
     PremiumBadgeComponent,
     AcceptEmergencyComponent,
