@@ -146,10 +146,10 @@
     "message": "Account"
   },
   "changeMasterPassword": {
-    "message": "Change Master Password"
+    "message": "Change master password"
   },
   "fingerprintPhrase": {
-    "message": "Fingerprint Phrase",
+    "message": "Fingerprint phrase",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
   "yourAccountsFingerprint": {
@@ -157,10 +157,10 @@
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
   "twoStepLogin": {
-    "message": "Two-step Login"
+    "message": "Two-step login"
   },
   "logOut": {
-    "message": "Log Out"
+    "message": "Log out"
   },
   "about": {
     "message": "About"
@@ -193,7 +193,7 @@
     "message": "There are no folders to list."
   },
   "helpFeedback": {
-    "message": "Help & Feedback"
+    "message": "Help & feedback"
   },
   "sync": {
     "message": "Sync"
@@ -215,10 +215,10 @@
     "message": "Automatically generate strong, unique passwords for your logins."
   },
   "bitWebVault": {
-    "message": "Bitwarden Web Vault"
+    "message": "Bitwarden web vault"
   },
   "importItems": {
-    "message": "Import Items"
+    "message": "Import items"
   },
   "select": {
     "message": "Select"
@@ -330,7 +330,7 @@
     "message": "Other"
   },
   "rateExtension": {
-    "message": "Rate the Extension"
+    "message": "Rate the extension"
   },
   "rateExtensionDesc": {
     "message": "Please consider helping us out with a good review!"
@@ -364,10 +364,10 @@
     "message": "Invalid master password"
   },
   "vaultTimeout": {
-    "message": "Vault Timeout"
+    "message": "Vault timeout"
   },
   "lockNow": {
-    "message": "Lock Now"
+    "message": "Lock now"
   },
   "immediately": {
     "message": "Immediately"
@@ -403,10 +403,10 @@
     "message": "4 hours"
   },
   "onLocked": {
-    "message": "On System Lock"
+    "message": "On system lock"
   },
   "onRestart": {
-    "message": "On Browser Restart"
+    "message": "On browser restart"
   },
   "never": {
     "message": "Never"
@@ -568,7 +568,7 @@
     "description": "This is the folder for uncategorized items"
   },
   "enableAddLoginNotification": {
-    "message": "Ask to add new login"
+    "message": "Ask to add login"
   },
   "addLoginNotificationDesc": {
     "message": "Ask to add an item if one isn't found in your vault."
@@ -586,7 +586,7 @@
     "message": "List identity items on the Tab page for easy auto-fill."
   },
   "clearClipboard": {
-    "message": "Clear Clipboard",
+    "message": "Clear clipboard",
     "description": "Clipboard is the operating system thing where you copy/paste data to on your device."
   },
   "clearClipboardDesc": {
@@ -618,7 +618,7 @@
     "message": "Use a secondary click to access password generation and matching logins for the website. "
   },
   "defaultUriMatchDetection": {
-    "message": "Default URI Match Detection",
+    "message": "Default URI match detection",
     "description": "Default URI match detection for auto-fill."
   },
   "defaultUriMatchDetectionDesc": {
@@ -639,11 +639,11 @@
     "description": "Light color"
   },
   "solarizedDark": {
-    "message": "Solarized Dark",
+    "message": "Solarized dark",
     "description": "'Solarized' is a noun and the name of a color scheme. It should not be translated."
   },
   "exportVault": {
-    "message": "Export Vault"
+    "message": "Export vault"
   },
   "fileFormat": {
     "message": "File Format"
@@ -671,7 +671,7 @@
     "message": "Shared"
   },
   "learnOrg": {
-    "message": "Learn about Organizations"
+    "message": "Learn about organizations"
   },
   "learnOrgConfirmation": {
     "message": "Bitwarden allows you to share your vault items with others by using an organization. Would you like to visit the bitwarden.com website to learn more?"
@@ -747,7 +747,7 @@
     "message": "You cannot use this feature until you update your encryption key."
   },
   "premiumMembership": {
-    "message": "Premium Membership"
+    "message": "Premium membership"
   },
   "premiumManage": {
     "message": "Manage Membership"
@@ -1249,7 +1249,7 @@
     "description": "Domain name. Ex. website.com"
   },
   "domainName": {
-    "message": "Domain Name",
+    "message": "Domain name",
     "description": "Domain name. Ex. website.com"
   },
   "host": {
@@ -1386,7 +1386,7 @@
     "message": "One or more organization policies are affecting your generator settings."
   },
   "vaultTimeoutAction": {
-    "message": "Vault Timeout Action"
+    "message": "Vault timeout action"
   },
   "lock": {
     "message": "Lock",
@@ -1562,7 +1562,7 @@
     "message": "An organization policy is affecting your ownership options."
   },
   "excludedDomains": {
-    "message": "Excluded Domains"
+    "message": "Excluded domains"
   },
   "excludedDomainsDesc": {
     "message": "Bitwarden will not ask to save login details for these domains. You must refresh the page for changes to take effect."
