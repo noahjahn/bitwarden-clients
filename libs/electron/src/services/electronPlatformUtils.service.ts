@@ -6,7 +6,6 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { DeviceType } from "@bitwarden/common/enums/deviceType";
-import { ThemeType } from "@bitwarden/common/enums/themeType";
 
 import { isDev, isMacAppStore } from "../utils";
 
@@ -187,18 +186,6 @@ export class ElectronPlatformUtilsService implements PlatformUtilsService {
       });
       resolve(val);
     });
-  }
-
-  getDefaultSystemTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
-    throw new Error("Not implemented.");
-  }
-
-  onDefaultSystemThemeChange(_callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
-    throw new Error("Not implemented.");
-  }
-
-  async getEffectiveTheme(): Promise<ThemeType> {
-    throw new Error("Not implemented.");
   }
 
   supportsSecureStorage(): boolean {

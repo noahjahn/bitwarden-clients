@@ -5,21 +5,17 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { DeviceType } from "@bitwarden/common/enums/deviceType";
-import { ThemeType } from "@bitwarden/common/enums/themeType";
 
 @Injectable()
 export class WebPlatformUtilsService implements PlatformUtilsService {
   private browserCache: DeviceType = null;
-  private prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
   constructor(
     private i18nService: I18nService,
     private messagingService: MessagingService,
-    private logService: LogService,
-    private stateService: StateService
+    private logService: LogService
   ) {}
 
   getDevice(): DeviceType {
@@ -302,17 +298,5 @@ export class WebPlatformUtilsService implements PlatformUtilsService {
 
   supportsSecureStorage() {
     return false;
-  }
-
-  getDefaultSystemTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
-    throw new Error("Not implemented.");
-  }
-
-  async getEffectiveTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
-    throw new Error("Not implemented.");
-  }
-
-  onDefaultSystemThemeChange(_callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
-    throw new Error("Not implemented.");
   }
 }
