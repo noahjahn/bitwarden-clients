@@ -189,23 +189,16 @@ export class ElectronPlatformUtilsService implements PlatformUtilsService {
     });
   }
 
-  getDefaultSystemTheme() {
-    return ipcRenderer.invoke("systemTheme");
+  getDefaultSystemTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
+    throw new Error("Not implemented.");
   }
 
-  onDefaultSystemThemeChange(callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
-    ipcRenderer.on("systemThemeUpdated", (event, theme: ThemeType.Light | ThemeType.Dark) =>
-      callback(theme)
-    );
+  onDefaultSystemThemeChange(_callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
+    throw new Error("Not implemented.");
   }
 
-  async getEffectiveTheme() {
-    const theme = await this.stateService.getTheme();
-    if (theme == null || theme === ThemeType.System) {
-      return this.getDefaultSystemTheme();
-    } else {
-      return theme;
-    }
+  async getEffectiveTheme(): Promise<ThemeType> {
+    throw new Error("Not implemented.");
   }
 
   supportsSecureStorage(): boolean {
