@@ -34,13 +34,36 @@ export class EncryptService implements AbstractEncryptService {
   }
 
   async decryptToUtf8(encString: EncString, key?: SymmetricCryptoKey): Promise<string> {
-    return await this.aesDecryptToUtf8(
-      encString.encryptionType,
+    if (key.macKey != null && encString.mac == null) {
+      this.logService.error("mac required.");
+      return null;
+    }
+
+    if (key.encType !== encString.encryptionType) {
+      this.logService.error("encType unavailable.");
+      return null;
+    }
+
+    const fastParams = this.cryptoFunctionService.aesDecryptFastParameters(
       encString.data,
       encString.iv,
       encString.mac,
       key
     );
+    if (fastParams.macKey != null && fastParams.mac != null) {
+      const computedMac = await this.cryptoFunctionService.hmacFast(
+        fastParams.macData,
+        fastParams.macKey,
+        "sha256"
+      );
+      const macsEqual = await this.cryptoFunctionService.compareFast(fastParams.mac, computedMac);
+      if (!macsEqual) {
+        this.logService.error("mac failed.");
+        return null;
+      }
+    }
+
+    return this.cryptoFunctionService.aesDecryptFast(fastParams);
   }
 
   private async aesEncrypt(data: ArrayBuffer, key: SymmetricCryptoKey): Promise<EncryptedObject> {
@@ -57,39 +80,5 @@ export class EncryptService implements AbstractEncryptService {
     }
 
     return obj;
-  }
-
-  private async aesDecryptToUtf8(
-    encType: EncryptionType,
-    data: string,
-    iv: string,
-    mac: string,
-    key: SymmetricCryptoKey
-  ): Promise<string> {
-    if (key.macKey != null && mac == null) {
-      this.logService.error("mac required.");
-      return null;
-    }
-
-    if (key.encType !== encType) {
-      this.logService.error("encType unavailable.");
-      return null;
-    }
-
-    const fastParams = this.cryptoFunctionService.aesDecryptFastParameters(data, iv, mac, key);
-    if (fastParams.macKey != null && fastParams.mac != null) {
-      const computedMac = await this.cryptoFunctionService.hmacFast(
-        fastParams.macData,
-        fastParams.macKey,
-        "sha256"
-      );
-      const macsEqual = await this.cryptoFunctionService.compareFast(fastParams.mac, computedMac);
-      if (!macsEqual) {
-        this.logService.error("mac failed.");
-        return null;
-      }
-    }
-
-    return this.cryptoFunctionService.aesDecryptFast(fastParams);
   }
 }
