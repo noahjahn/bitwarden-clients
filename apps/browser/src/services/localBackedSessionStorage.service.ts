@@ -23,6 +23,8 @@ export class LocalBackedSessionStorageService extends AbstractStorageService {
     private keyGenerationService: AbstractKeyGenerationService
   ) {
     super();
+    // incorrect mac handled by re-initializing
+    encryptService.logMacFailures = false;
   }
 
   async get<T>(key: string): Promise<T> {

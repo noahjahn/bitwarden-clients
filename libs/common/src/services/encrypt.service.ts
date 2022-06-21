@@ -1,6 +1,5 @@
 import { CryptoFunctionService } from "@bitwarden/common/abstractions/cryptoFunction.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { EncryptionType } from "@bitwarden/common/enums/encryptionType";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { EncString } from "@bitwarden/common/models/domain/encString";
 import { EncryptedObject } from "@bitwarden/common/models/domain/encryptedObject";
@@ -9,6 +8,8 @@ import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCry
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 
 export class EncryptService implements AbstractEncryptService {
+  logMacFailures = true;
+
   constructor(
     private cryptoFunctionService: CryptoFunctionService,
     private logService: LogService
@@ -58,7 +59,7 @@ export class EncryptService implements AbstractEncryptService {
       );
       const macsEqual = await this.cryptoFunctionService.compareFast(fastParams.mac, computedMac);
       if (!macsEqual) {
-        this.logService.error("mac failed.");
+        this.logMacFailed("mac failed.");
         return null;
       }
     }
@@ -80,5 +81,11 @@ export class EncryptService implements AbstractEncryptService {
     }
 
     return obj;
+  }
+
+  private logMacFailed(msg: string) {
+    if (this.logMacFailures) {
+      this.logService.error(msg);
+    }
   }
 }
