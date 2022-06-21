@@ -94,11 +94,9 @@ export class StateService<
 
   async initAccountState() {
     if (this.isRecoveredSession) {
-      console.log("already inited");
       return;
     }
 
-    console.log("made it past");
     await this.updateState(async (state) => {
       state.authenticatedAccounts =
         (await this.storageService.get<string[]>(keys.authenticatedAccounts)) ?? [];
@@ -114,7 +112,6 @@ export class StateService<
       await this.pushAccounts();
       this.activeAccount.next(state.activeUserId);
 
-      console.log("updateing init state", state);
       return state;
     });
   }
