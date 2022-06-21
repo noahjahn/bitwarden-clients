@@ -3406,7 +3406,7 @@
     "message": "Vault timeout action"
   },
   "vaultTimeoutActionLockDesc": {
-    "message": "Master password re-entry is required to access your vault again. "
+    "message": "Master password or other unlock method is required to access your vault again."
   },
   "vaultTimeoutActionLogOutDesc": {
     "message": "Re-authentication is required to access your vault again."
