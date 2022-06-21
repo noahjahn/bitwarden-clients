@@ -126,7 +126,7 @@
     "message": "Minimize when copying to clipboard"
   },
   "minimizeOnCopyToClipboardDesc": {
-    "message": "Minimize when copying an item's data to the clipboard."
+    "message": "Minimize application when copying an item's data to the clipboard."
   },
   "toggleVisibility": {
     "message": "Toggle Visibility"
@@ -946,7 +946,7 @@
     "message": "Start automatically on login"
   },
   "openAtLoginDesc": {
-    "message": "Start the Bitwarden Desktop application automatically on login."
+    "message": "Start the Bitwarden desktop application automatically on login."
   },
   "alwaysShowDock": {
     "message": "Always show in the Dock"
@@ -1440,7 +1440,7 @@
     "message": "Vault timeout action"
   },
   "vaultTimeoutActionLockDesc": {
-    "message": "Master password re-entry is required to access your vault again."
+    "message": "Master password or other unlock method is required to access your vault again."
   },
   "vaultTimeoutActionLogOutDesc": {
     "message": "Re-authentication is required to access your vault again."
