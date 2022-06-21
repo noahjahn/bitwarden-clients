@@ -9,6 +9,7 @@ import { first } from "rxjs";
 export class TrialInitiationComponent implements OnInit {
   layout = "";
   email = "";
+  org = "teams";
 
   constructor(private route: ActivatedRoute) {}
 
@@ -17,18 +18,11 @@ export class TrialInitiationComponent implements OnInit {
       if (qParams.email != null && qParams.email.indexOf("@") > -1) {
         this.email = qParams.email;
       }
-      switch (qParams.layout) {
-        case "families":
-          this.layout = "families";
-          break;
-        case "enterprise":
-        case "enterprise1":
-        case "enterprise2":
-          this.layout = "enterprise";
-          break;
-        default:
-          this.layout = "teams";
-          break;
+      if (qParams.org) {
+        this.org = qParams.org;
+      }
+      if (qParams.layout) {
+        // For marketing use
       }
     });
   }

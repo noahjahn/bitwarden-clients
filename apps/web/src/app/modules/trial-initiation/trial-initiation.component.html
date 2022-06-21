@@ -21,37 +21,11 @@
       <!-- This is to for illustrative purposes and content will be replaced by marketing -->
       <div class="tw-pt-12">
         <!-- Teams Body -->
-        <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'teams' || layout === 'teams1'">
-          <h1 class="!tw-text-[#ffffff]">You've chosen Bitwarden for Teams</h1>
-          <div class="tw-pt-20">
-            <h2>What you can do with Btiwarden for Teams</h2>
-          </div>
-        </div>
-
+        <app-teams-content *ngIf="org === 'teams'"></app-teams-content>
         <!-- Enterprise Body -->
-        <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'enterprise'">
-          <h1 class="!tw-text-[#ffffff]">You've chosen Bitwarden for Enterprise</h1>
-          <div class="tw-pt-20">
-            <h2>What you can do with Bitwarden for Enterprise</h2>
-          </div>
-        </div>
-
+        <app-enterprise-content *ngIf="org === 'enterprise'"></app-enterprise-content>
         <!-- Families Body -->
-        <div class="tw-max-w-3xl tw-min-w-fit" *ngIf="layout === 'families'">
-          <h1 class="tw-text-[#ffffff]">You've chosen Bitwarden for Families</h1>
-          <div class="tw-pt-20">
-            <h2>
-              Trusted by millions of individuals, teams, and organizations worldwide for secure
-              password storage and sharing.
-            </h2>
-          </div>
-        </div>
-        <div class="tw-text-3xl tw-text-main tw-mt-12">
-          <p class="tw-mt-2.5 tw-mb-20">Collaborate and share securely</p>
-          <p class="tw-mt-2.5 tw-mb-20">Deploy and manage quickly and easily</p>
-          <p class="tw-mt-2.5 tw-mb-20">Access anywhere on any device</p>
-          <p class="tw-mt-2.5 tw-mb-20">Create your account to get started</p>
-        </div>
+        <app-families-content *ngIf="org === 'families'"></app-families-content>
       </div>
     </div>
     <div>
@@ -61,7 +35,7 @@
             <h2
               class="tw-text-left tw-text-main tw-uppercase tw-pl-4 tw-text-base tw-mb-0 tw-font-bold"
             >
-              Start your 7-Day free trial of Bitwarden for {{ layout }}
+              Start your 7-Day free trial of Bitwarden for {{ org }}
             </h2>
           </div>
           <app-vertical-stepper #stepper linear>
