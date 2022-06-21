@@ -9,11 +9,10 @@ import {
 import { EventService as EventLoggingServiceAbstraction } from "@bitwarden/common/abstractions/event.service";
 import { I18nService as I18nServiceAbstraction } from "@bitwarden/common/abstractions/i18n.service";
 import { NotificationsService as NotificationsServiceAbstraction } from "@bitwarden/common/abstractions/notifications.service";
-import { PlatformUtilsService as PlatformUtilsServiceAbstraction } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService as StateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
+import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { TwoFactorService as TwoFactorServiceAbstraction } from "@bitwarden/common/abstractions/twoFactor.service";
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout.service";
-import { ThemeType } from "@bitwarden/common/enums/themeType";
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { EventService as EventLoggingService } from "@bitwarden/common/services/event.service";
 import { VaultTimeoutService as VaultTimeoutService } from "@bitwarden/common/services/vaultTimeout.service";
@@ -31,8 +30,8 @@ export class InitService {
     private eventLoggingService: EventLoggingServiceAbstraction,
     private twoFactorService: TwoFactorServiceAbstraction,
     private stateService: StateServiceAbstraction,
-    private platformUtilsService: PlatformUtilsServiceAbstraction,
-    private cryptoService: CryptoServiceAbstraction
+    private cryptoService: CryptoServiceAbstraction,
+    private themingService: ThemingService
   ) {}
 
   init() {
@@ -45,6 +44,8 @@ export class InitService {
 
       setTimeout(() => this.notificationsService.init(), 3000);
 
+      await this.themingService.monitorThemeChanges();
+
       (this.vaultTimeoutService as VaultTimeoutService).init(true);
       const locale = await this.stateService.getLocale();
       await (this.i18nService as I18nService).init(locale);
@@ -52,16 +53,6 @@ export class InitService {
       this.twoFactorService.init();
       const htmlEl = this.win.document.documentElement;
       htmlEl.classList.add("locale_" + this.i18nService.translationLocale);
-
-      // Initial theme is set in index.html which must be updated if there are any changes to theming logic
-      this.platformUtilsService.onDefaultSystemThemeChange(async (sysTheme) => {
-        const bwTheme = await this.stateService.getTheme();
-        if (bwTheme === ThemeType.System) {
-          htmlEl.classList.remove("theme_" + ThemeType.Light, "theme_" + ThemeType.Dark);
-          htmlEl.classList.add("theme_" + sysTheme);
-        }
-      });
-
       const containerService = new ContainerService(this.cryptoService);
       containerService.attachToWindow(this.win);
     };

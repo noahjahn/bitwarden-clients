@@ -305,30 +305,14 @@ export class WebPlatformUtilsService implements PlatformUtilsService {
   }
 
   getDefaultSystemTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
-    return Promise.resolve(this.prefersColorSchemeDark.matches ? ThemeType.Dark : ThemeType.Light);
+    throw new Error("Not implemented.");
   }
 
   async getEffectiveTheme(): Promise<ThemeType.Light | ThemeType.Dark> {
-    const theme = await this.stateService.getTheme();
-    if (theme === ThemeType.Dark) {
-      return ThemeType.Dark;
-    } else if (theme === ThemeType.System) {
-      return this.getDefaultSystemTheme();
-    } else {
-      return ThemeType.Light;
-    }
+    throw new Error("Not implemented.");
   }
 
-  onDefaultSystemThemeChange(callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
-    try {
-      this.prefersColorSchemeDark.addEventListener("change", ({ matches }) => {
-        callback(matches ? ThemeType.Dark : ThemeType.Light);
-      });
-    } catch (e) {
-      // Safari older than v14
-      this.prefersColorSchemeDark.addListener((ev) => {
-        callback(ev.matches ? ThemeType.Dark : ThemeType.Light);
-      });
-    }
+  onDefaultSystemThemeChange(_callback: (theme: ThemeType.Light | ThemeType.Dark) => unknown) {
+    throw new Error("Not implemented.");
   }
 }

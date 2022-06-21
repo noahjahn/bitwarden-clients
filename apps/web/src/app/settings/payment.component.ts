@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { take } from "rxjs";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
+import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { PaymentMethodType } from "@bitwarden/common/enums/paymentMethodType";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
 
@@ -48,9 +49,9 @@ export class PaymentComponent implements OnInit {
   private StripeElementClasses: any;
 
   constructor(
-    private platformUtilsService: PlatformUtilsService,
     private apiService: ApiService,
-    private logService: LogService
+    private logService: LogService,
+    private themingService: ThemingService
   ) {
     this.stripeScript = window.document.createElement("script");
     this.stripeScript.src = "https://js.stripe.com/v3/";
@@ -275,15 +276,16 @@ export class PaymentComponent implements OnInit {
   }
 
   private async setTheme() {
-    const theme = await this.platformUtilsService.getEffectiveTheme();
-    if (theme === ThemeType.Dark) {
-      this.StripeElementStyle.base.color = darkInputColor;
-      this.StripeElementStyle.base["::placeholder"].color = darkInputPlaceholderColor;
-      this.StripeElementStyle.invalid.color = darkInputColor;
-    } else {
-      this.StripeElementStyle.base.color = lightInputColor;
-      this.StripeElementStyle.base["::placeholder"].color = lightInputPlaceholderColor;
-      this.StripeElementStyle.invalid.color = lightInputColor;
-    }
+    this.themingService.theme$.pipe(take(1)).subscribe((theme) => {
+      if (theme.effectiveTheme === ThemeType.Dark) {
+        this.StripeElementStyle.base.color = darkInputColor;
+        this.StripeElementStyle.base["::placeholder"].color = darkInputPlaceholderColor;
+        this.StripeElementStyle.invalid.color = darkInputColor;
+      } else {
+        this.StripeElementStyle.base.color = lightInputColor;
+        this.StripeElementStyle.base["::placeholder"].color = lightInputPlaceholderColor;
+        this.StripeElementStyle.invalid.color = lightInputColor;
+      }
+    });
   }
 }
