@@ -10,6 +10,7 @@ import {
   SYSTEM_LANGUAGE,
   MEMORY_STORAGE,
 } from "@bitwarden/angular/services/jslib-services.module";
+import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { BroadcasterService as BroadcasterServiceAbstraction } from "@bitwarden/common/abstractions/broadcaster.service";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
@@ -104,6 +105,7 @@ const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
       useClass: ElectronCryptoService,
       deps: [
         CryptoFunctionServiceAbstraction,
+        AbstractEncryptService,
         PlatformUtilsServiceAbstraction,
         LogServiceAbstraction,
         StateServiceAbstraction,
