@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { Permissions } from "@bitwarden/common/enums/permissions";
 
-import { PermissionsGuard } from "../organizations/guards/permissions.guard";
+import { PermissionsGuard } from "../../guards/permissions.guard";
 
 import { OrganizationExportComponent } from "./org-export.component";
 import { OrganizationImportComponent } from "./org-import.component";
@@ -32,4 +32,4 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
 })
-export class OrganizationImportersRoutingModule {}
+export class OrganizationImportExportRoutingModule {}

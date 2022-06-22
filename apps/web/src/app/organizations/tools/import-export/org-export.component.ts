@@ -11,11 +11,11 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
 import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification.service";
 
-import { ExportComponent } from "../import-export/export.component";
+import { ExportComponent } from "../../../tools/import-export/export.component";
 
 @Component({
   selector: "app-org-export",
-  templateUrl: "../import-export/export.component.html",
+  templateUrl: "../../../tools/import-export/export.component.html",
 })
 export class OrganizationExportComponent extends ExportComponent {
   constructor(

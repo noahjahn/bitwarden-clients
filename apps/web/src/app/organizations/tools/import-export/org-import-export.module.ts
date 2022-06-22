@@ -13,11 +13,11 @@ import { ImportService as ImportServiceAbstraction } from "@bitwarden/common/abs
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ImportService } from "@bitwarden/common/services/import.service";
 
-import { LooseComponentsModule } from "../modules/loose-components.module";
+import { LooseComponentsModule } from "../../../modules/loose-components.module";
 
 import { OrganizationExportComponent } from "./org-export.component";
+import { OrganizationImportExportRoutingModule } from "./org-import-export-routing.module";
 import { OrganizationImportComponent } from "./org-import.component";
-import { OrganizationImportersRoutingModule } from "./org-importers-routing.module";
 
 @NgModule({
   imports: [
@@ -26,7 +26,7 @@ import { OrganizationImportersRoutingModule } from "./org-importers-routing.modu
     LooseComponentsModule,
     FormsModule,
     ReactiveFormsModule,
-    OrganizationImportersRoutingModule,
+    OrganizationImportExportRoutingModule,
   ],
   declarations: [OrganizationImportComponent, OrganizationExportComponent],
   providers: [

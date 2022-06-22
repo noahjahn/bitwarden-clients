@@ -8,11 +8,11 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
 
-import { ImportComponent } from "../import-export/import.component";
+import { ImportComponent } from "../../../tools/import-export/import.component";
 
 @Component({
   selector: "app-org-import",
-  templateUrl: "../import-export/import.component.html",
+  templateUrl: "../../../tools/import-export/import.component.html",
 })
 export class OrganizationImportComponent extends ImportComponent {
   organizationName: string;
