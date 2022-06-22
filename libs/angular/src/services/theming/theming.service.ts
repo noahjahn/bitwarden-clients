@@ -1,7 +1,7 @@
 import { MediaMatcher } from "@angular/cdk/layout";
 import { DOCUMENT } from "@angular/common";
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, fromEvent, Observable } from "rxjs";
+import { BehaviorSubject, filter, fromEvent, Observable } from "rxjs";
 
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
@@ -12,8 +12,8 @@ import { AbstractThemingService } from "./theming.service.abstraction";
 
 @Injectable()
 export class ThemingService implements AbstractThemingService {
-  private _theme = new BehaviorSubject<ThemeBuilder>(null);
-  theme$: Observable<Theme> = this._theme.asObservable();
+  private _theme = new BehaviorSubject<ThemeBuilder | null>(null);
+  theme$: Observable<Theme> = this._theme.pipe(filter((x) => x !== null));
 
   constructor(
     private stateService: StateService,
