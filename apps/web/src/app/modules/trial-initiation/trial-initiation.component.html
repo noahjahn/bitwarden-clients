@@ -32,23 +32,19 @@
               Start your 7-Day free trial of Bitwarden for {{ org }}
             </h2>
           </div>
-          <app-vertical-stepper #stepper linear>
+          <app-vertical-stepper linear>
             <!-- Content is for demo purposes. Replace with form components for each step-->
-            <app-vertical-step #step1 label="Create Account" [editable]="false">
+            <app-vertical-step label="Create Account" [editable]="false">
               <!-- Replace content with Registration step -->
               <p>This is content of "Step 1" that has editable set to false</p>
               <button bitButton buttonType="primary" cdkStepperNext>Complete step</button>
             </app-vertical-step>
-            <app-vertical-step
-              #step2
-              label="Create Organization"
-              subLabel="It better be a good org"
-            >
+            <app-vertical-step label="Create Organization" subLabel="It better be a good org">
               <!-- Replace with Org creation step -->
               <p>This is content of "Step 2"</p>
               <button bitButton buttonType="primary" cdkStepperNext>Complete step</button>
             </app-vertical-step>
-            <app-vertical-step #step3 label="Billing">
+            <app-vertical-step label="Billing">
               <!-- Replace with Billing step -->
               <p>This is content of "Step 3"</p>
               <button bitButton buttonType="secondary" cdkStepperPrevious>Back</button>
@@ -57,9 +53,6 @@
             <app-vertical-step label="Confirmation Details" subLabel="Fancy sub label">
               <!-- Replace with Confirmation details step -->
               <p>This is any content of "Step 4"</p>
-              <button bitButton buttonType="secondary" (click)="stepper.reset()" cdkStepperPrevious>
-                Reset stepper
-              </button>
               <button bitButton buttonType="primary" cdkStepperNext>Complete</button>
             </app-vertical-step>
           </app-vertical-stepper>
