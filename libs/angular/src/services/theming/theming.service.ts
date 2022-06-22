@@ -4,14 +4,14 @@ import { Inject, Injectable } from "@angular/core";
 import { BehaviorSubject, fromEvent, Observable } from "rxjs";
 
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { ThemingService as ThemingServiceAbstraction } from "@bitwarden/common/abstractions/theming.service";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
 
 import { Theme } from "./theme";
 import { ThemeBuilder } from "./themeBuilder";
+import { AbstractThemingService } from "./theming.service.abstraction";
 
 @Injectable()
-export class ThemingService implements ThemingServiceAbstraction {
+export class ThemingService implements AbstractThemingService {
   private _theme = new BehaviorSubject<ThemeBuilder>(null);
   theme$: Observable<Theme> = this._theme.asObservable();
 

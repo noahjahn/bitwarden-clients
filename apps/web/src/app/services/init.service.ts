@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 
 import { WINDOW } from "@bitwarden/angular/services/jslib-services.module";
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import {
   EnvironmentService as EnvironmentServiceAbstraction,
@@ -10,7 +11,6 @@ import { EventService as EventLoggingServiceAbstraction } from "@bitwarden/commo
 import { I18nService as I18nServiceAbstraction } from "@bitwarden/common/abstractions/i18n.service";
 import { NotificationsService as NotificationsServiceAbstraction } from "@bitwarden/common/abstractions/notifications.service";
 import { StateService as StateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { TwoFactorService as TwoFactorServiceAbstraction } from "@bitwarden/common/abstractions/twoFactor.service";
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
@@ -31,7 +31,7 @@ export class InitService {
     private twoFactorService: TwoFactorServiceAbstraction,
     private stateService: StateServiceAbstraction,
     private cryptoService: CryptoServiceAbstraction,
-    private themingService: ThemingService
+    private themingService: AbstractThemingService
   ) {}
 
   init() {

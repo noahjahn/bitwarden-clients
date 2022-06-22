@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
 import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
@@ -40,7 +40,7 @@ export class OptionsComponent implements OnInit {
     private stateService: StateService,
     private totpService: TotpService,
     i18nService: I18nService,
-    private themingService: ThemingService
+    private themingService: AbstractThemingService
   ) {
     this.themeOptions = [
       { name: i18nService.t("default"), value: ThemeType.System },

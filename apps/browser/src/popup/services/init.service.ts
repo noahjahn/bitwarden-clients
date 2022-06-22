@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService as LogServiceAbstraction } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 
 import { StateService as StateServiceAbstraction } from "../../services/abstractions/state.service";
 
@@ -17,7 +17,7 @@ export class InitService {
     private popupUtilsService: PopupUtilsService,
     private stateService: StateServiceAbstraction,
     private logService: LogServiceAbstraction,
-    private themingService: ThemingService
+    private themingService: AbstractThemingService
   ) {}
 
   init() {

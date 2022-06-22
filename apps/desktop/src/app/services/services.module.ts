@@ -9,6 +9,7 @@ import {
   LOCALES_DIRECTORY,
   SYSTEM_LANGUAGE,
 } from "@bitwarden/angular/services/jslib-services.module";
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { BroadcasterService as BroadcasterServiceAbstraction } from "@bitwarden/common/abstractions/broadcaster.service";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
@@ -24,7 +25,6 @@ import { StateService as StateServiceAbstraction } from "@bitwarden/common/abstr
 import { StateMigrationService as StateMigrationServiceAbstraction } from "@bitwarden/common/abstractions/stateMigration.service";
 import { StorageService as StorageServiceAbstraction } from "@bitwarden/common/abstractions/storage.service";
 import { SystemService as SystemServiceAbstraction } from "@bitwarden/common/abstractions/system.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { GlobalState } from "@bitwarden/common/models/domain/globalState";
@@ -132,7 +132,7 @@ const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
       ],
     },
     {
-      provide: ThemingService,
+      provide: AbstractThemingService,
       useClass: DesktopThemingService,
     },
   ],

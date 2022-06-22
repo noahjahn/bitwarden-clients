@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
 import { Utils } from "@bitwarden/common/misc/utils";
@@ -36,7 +36,7 @@ export class PreferencesComponent implements OnInit {
     private vaultTimeoutService: VaultTimeoutService,
     private platformUtilsService: PlatformUtilsService,
     private messagingService: MessagingService,
-    private themingService: ThemingService
+    private themingService: AbstractThemingService
   ) {
     this.vaultTimeouts = [
       { name: i18nService.t("oneMinute"), value: 1 },

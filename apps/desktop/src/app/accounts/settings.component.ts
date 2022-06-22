@@ -3,12 +3,12 @@ import { FormControl } from "@angular/forms";
 import { debounceTime } from "rxjs/operators";
 
 import { ModalService } from "@bitwarden/angular/services/modal.service";
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
 import { DeviceType } from "@bitwarden/common/enums/deviceType";
 import { StorageLocation } from "@bitwarden/common/enums/storageLocation";
@@ -76,7 +76,7 @@ export class SettingsComponent implements OnInit {
     private messagingService: MessagingService,
     private cryptoService: CryptoService,
     private modalService: ModalService,
-    private themingService: ThemingService
+    private themingService: AbstractThemingService
   ) {
     const isMac = this.platformUtilsService.getDevice() === DeviceType.MacOsDesktop;
 

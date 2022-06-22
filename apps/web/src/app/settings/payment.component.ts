@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { take } from "rxjs";
 
+import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { ThemingService } from "@bitwarden/common/abstractions/theming.service";
 import { PaymentMethodType } from "@bitwarden/common/enums/paymentMethodType";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
 
@@ -51,7 +51,7 @@ export class PaymentComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private logService: LogService,
-    private themingService: ThemingService
+    private themingService: AbstractThemingService
   ) {
     this.stripeScript = window.document.createElement("script");
     this.stripeScript.src = "https://js.stripe.com/v3/";

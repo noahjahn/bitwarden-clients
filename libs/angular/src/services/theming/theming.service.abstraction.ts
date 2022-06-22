@@ -1,9 +1,10 @@
 import { Observable } from "rxjs";
 
-import { ThemeType } from "../enums/themeType";
-import { Theme } from "../services/theming/theme";
+import { ThemeType } from "@bitwarden/common/enums/themeType";
 
-export abstract class ThemingService {
+import { Theme } from "./theme";
+
+export abstract class AbstractThemingService {
   theme$: Observable<Theme>;
   monitorThemeChanges: () => Promise<void>;
   updateSystemTheme: (systemTheme: ThemeType) => void;
