@@ -45,4 +45,4 @@ import { ImportersRoutingModule } from "./importers-routing.module";
     },
   ],
 })
-export class ImportersModule {}
+export class ImportExportModule {}

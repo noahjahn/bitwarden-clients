@@ -55,8 +55,8 @@ const routes: Routes = [
           {
             path: "",
             loadChildren: () =>
-              import("../org-importers/org-importer.module").then(
-                (m) => m.OrganizationImportersModule
+              import("../org-importer-export/org-import-export.module").then(
+                (m) => m.OrganizationImportExportModule
               ),
           },
           {

@@ -45,4 +45,4 @@ import { OrganizationImportersRoutingModule } from "./org-importers-routing.modu
     },
   ],
 })
-export class OrganizationImportersModule {}
+export class OrganizationImportExportModule {}

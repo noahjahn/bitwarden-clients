@@ -216,7 +216,7 @@ const routes: Routes = [
           {
             path: "",
             loadChildren: () =>
-              import("./importers/importer.module").then((m) => m.ImportersModule),
+              import("./import-export/import-export.module").then((m) => m.ImportExportModule),
           },
           {
             path: "generator",
