@@ -7,7 +7,6 @@ import { first } from "rxjs";
   templateUrl: "trial-initiation.component.html",
 })
 export class TrialInitiationComponent implements OnInit {
-  layout = "";
   email = "";
   org = "teams";
 
@@ -20,9 +19,6 @@ export class TrialInitiationComponent implements OnInit {
       }
       if (qParams.org) {
         this.org = qParams.org;
-      }
-      if (qParams.layout) {
-        // For marketing use
       }
     });
   }
