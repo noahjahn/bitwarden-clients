@@ -2,9 +2,9 @@
   <button
     (click)="selectStep()"
     [disabled]="disabled"
-    class="!tw-w-full tw-h-full tw-flex tw-border-none tw-cursor-pointer tw-bg-transparent tw-items-center tw-flex-row tw-max !tw-cursor-default"
+    class="!tw-w-full tw-h-full tw-flex tw-border-none tw-cursor-pointer tw-bg-transparent tw-items-center tw-flex-row tw-max"
     [ngClass]="{
-      'hover:tw-bg-secondary-100 !tw-cursor-pointer': !disabled && step.editable
+      'hover:tw-bg-secondary-100': !disabled && step.editable
     }"
     [attr.aria-expanded]="selected"
   >
