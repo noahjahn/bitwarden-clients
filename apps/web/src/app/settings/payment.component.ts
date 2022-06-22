@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { take } from "rxjs";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Subject, takeUntil } from "rxjs";
 
 import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -18,13 +18,15 @@ const darkInputPlaceholderColor = ThemeVariables.darkInputPlaceholderColor;
   selector: "app-payment",
   templateUrl: "payment.component.html",
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, OnDestroy {
   @Input() showMethods = true;
   @Input() showOptions = true;
   @Input() method = PaymentMethodType.Card;
   @Input() hideBank = false;
   @Input() hidePaypal = false;
   @Input() hideCredit = false;
+
+  private destroy$: Subject<void> = new Subject<void>();
 
   bank: any = {
     routing_number: null,
@@ -101,6 +103,8 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     window.document.head.removeChild(this.stripeScript);
     window.setTimeout(() => {
       Array.from(window.document.querySelectorAll("iframe")).forEach((el) => {
@@ -276,7 +280,7 @@ export class PaymentComponent implements OnInit {
   }
 
   private async setTheme() {
-    this.themingService.theme$.pipe(take(1)).subscribe((theme) => {
+    this.themingService.theme$.pipe(takeUntil(this.destroy$)).subscribe((theme) => {
       if (theme.effectiveTheme === ThemeType.Dark) {
         this.StripeElementStyle.base.color = darkInputColor;
         this.StripeElementStyle.base["::placeholder"].color = darkInputPlaceholderColor;
