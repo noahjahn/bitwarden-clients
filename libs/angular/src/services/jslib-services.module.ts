@@ -368,7 +368,7 @@ export const SYSTEM_LANGUAGE = new InjectionToken<string>("SYSTEM_LANGUAGE");
     {
       provide: AbstractEncryptService,
       useClass: EncryptService,
-      deps: [CryptoFunctionServiceAbstraction, LogService],
+      deps: [CryptoFunctionServiceAbstraction, LogService, true], // Log mac failures = true
     },
     {
       provide: EventServiceAbstraction,

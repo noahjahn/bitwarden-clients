@@ -8,14 +8,17 @@ import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCry
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 
 export class EncryptService implements AbstractEncryptService {
-  logMacFailures = true;
-
   constructor(
     private cryptoFunctionService: CryptoFunctionService,
-    private logService: LogService
+    private logService: LogService,
+    private logMacFailures: boolean
   ) {}
 
   async encrypt(plainValue: string | ArrayBuffer, key: SymmetricCryptoKey): Promise<EncString> {
+    if (key == null) {
+      throw new Error("no encryption key provided.");
+    }
+
     if (plainValue == null) {
       return Promise.resolve(null);
     }

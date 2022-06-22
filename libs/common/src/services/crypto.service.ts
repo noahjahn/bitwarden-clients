@@ -505,6 +505,11 @@ export class CryptoService implements CryptoServiceAbstraction {
     return this.buildEncKey(key, encKey.key);
   }
 
+  /**
+   * @deprecated June 22 2022: This method has been moved to encryptService.
+   * All callers should use this service to grab the relevant key and use encryptService for encryption instead.
+   * This method will be removed once all existing code has been refactored to use encryptService.
+   */
   async encrypt(plainValue: string | ArrayBuffer, key?: SymmetricCryptoKey): Promise<EncString> {
     key = await this.getKeyForEncryption(key);
 
@@ -608,6 +613,7 @@ export class CryptoService implements CryptoServiceAbstraction {
 
   async decryptToUtf8(encString: EncString, key?: SymmetricCryptoKey): Promise<string> {
     key = await this.getKeyForEncryption(key);
+    key = await this.resolveLegacyKey(encString.encryptionType, key);
     return await this.encryptService.decryptToUtf8(encString, key);
   }
 
@@ -738,6 +744,10 @@ export class CryptoService implements CryptoServiceAbstraction {
       : await this.stateService.getCryptoMasterKeyBiometric({ userId: userId });
   }
 
+  /**
+   * @deprecated June 22 2022: This method has been moved to encryptService.
+   * All callers should use encryptService instead. This method will be removed once all existing code has been refactored to use encryptService.
+   */
   private async aesEncrypt(data: ArrayBuffer, key: SymmetricCryptoKey): Promise<EncryptedObject> {
     const obj = new EncryptedObject();
     obj.key = await this.getKeyForEncryption(key);
@@ -752,43 +762,6 @@ export class CryptoService implements CryptoServiceAbstraction {
     }
 
     return obj;
-  }
-
-  private async aesDecryptToUtf8(
-    encType: EncryptionType,
-    data: string,
-    iv: string,
-    mac: string,
-    key: SymmetricCryptoKey
-  ): Promise<string> {
-    const keyForEnc = await this.getKeyForEncryption(key);
-    const theKey = await this.resolveLegacyKey(encType, keyForEnc);
-
-    if (theKey.macKey != null && mac == null) {
-      this.logService.error("mac required.");
-      return null;
-    }
-
-    if (theKey.encType !== encType) {
-      this.logService.error("encType unavailable.");
-      return null;
-    }
-
-    const fastParams = this.cryptoFunctionService.aesDecryptFastParameters(data, iv, mac, theKey);
-    if (fastParams.macKey != null && fastParams.mac != null) {
-      const computedMac = await this.cryptoFunctionService.hmacFast(
-        fastParams.macData,
-        fastParams.macKey,
-        "sha256"
-      );
-      const macsEqual = await this.cryptoFunctionService.compareFast(fastParams.mac, computedMac);
-      if (!macsEqual) {
-        this.logService.error("mac failed.");
-        return null;
-      }
-    }
-
-    return this.cryptoFunctionService.aesDecryptFast(fastParams);
   }
 
   private async aesDecryptToBytes(

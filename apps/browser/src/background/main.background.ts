@@ -146,6 +146,7 @@ export default class MainBackground {
   twoFactorService: TwoFactorServiceAbstraction;
   vaultFilterService: VaultFilterService;
   usernameGenerationService: UsernameGenerationServiceAbstraction;
+  encryptService: EncryptService;
 
   onUpdatedRan: boolean;
   onReplacedRan: boolean;
@@ -193,7 +194,7 @@ export default class MainBackground {
     this.memoryStorageService =
       chrome.runtime.getManifest().manifest_version == 3
         ? new LocalBackedSessionStorageService(
-            new EncryptService(this.cryptoFunctionService, this.logService),
+            new EncryptService(this.cryptoFunctionService, this.logService, false),
             new KeyGenerationService(this.cryptoFunctionService)
           )
         : new MemoryStorageService();
@@ -233,9 +234,10 @@ export default class MainBackground {
       }
     );
     this.i18nService = new I18nService(BrowserApi.getUILanguage(window));
+    this.encryptService = new EncryptService(this.cryptoFunctionService, this.logService, true);
     this.cryptoService = new BrowserCryptoService(
       this.cryptoFunctionService,
-      new EncryptService(this.cryptoFunctionService, this.logService),
+      this.encryptService,
       this.platformUtilsService,
       this.logService,
       this.stateService
