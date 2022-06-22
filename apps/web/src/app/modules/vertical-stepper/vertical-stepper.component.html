@@ -1,53 +1,13 @@
 <div>
   <ul class="tw-flex tw-list-none tw-flex-col tw-flex-wrap tw-p-5">
     <li *ngFor="let step of steps; let i = index; let isLast = last">
-      <div class="tw-m-2.5 tw-text-center tw-h-16">
-        <button
-          (click)="selectStepByIndex(i)"
-          class="!tw-w-full tw-h-full tw-flex tw-border-none tw-cursor-pointer tw-bg-transparent tw-items-center tw-flex-row tw-max !tw-cursor-default"
-          [ngClass]="{
-            'hover:tw-bg-secondary-100 !tw-cursor-pointer': !isStepDisabled(i) && step.editable
-          }"
-          [attr.aria-expanded]="selectedIndex === i"
-        >
-          <span
-            class="tw-rounded-full tw-flex-row tw-font-bold tw-leading-9 tw-mr-3.5 tw-items-center !tw-w-9"
-            *ngIf="!step.completed"
-            [ngClass]="{
-              '!tw-text-contrast !tw-bg-primary-500': selectedIndex === i,
-              '!tw-text-main !tw-bg-secondary-300':
-                selectedIndex !== i && !isStepDisabled(i) && step.editable,
-              '!tw-text-muted !tw-bg-transparent': isStepDisabled(i)
-            }"
-          >
-            {{ i + 1 }}
-          </span>
-          <span
-            class="!tw-text-contrast !tw-bg-primary-500 tw-rounded-full tw-flex-row tw-font-bold tw-leading-9 tw-mr-3.5 tw-items-center !tw-w-9"
-            *ngIf="step.completed"
-          >
-            <i class="bwi bwi-fw bwi-check tw-p-1" aria-hidden="true"></i>
-          </span>
-          <ng-container>
-            <div
-              class="tw-text-left tw-txt-main tw-leading-snug tw-h-12 tw-mt-3.5"
-              [ngClass]="{
-                'tw-font-bold': selectedIndex === i
-              }"
-            >
-              <p
-                class="main-label text tw-text-main !tw-mb-1"
-                [ngClass]="{
-                  'tw-mt-1': !step.subLabel
-                }"
-              >
-                {{ step.label }}
-              </p>
-              <p class="sub-label small tw-text-muted">{{ step.subLabel }}</p>
-            </div>
-          </ng-container>
-        </button>
-      </div>
+      <app-vertical-step-content
+        [disabled]="isStepDisabled(i)"
+        [selected]="selectedIndex === i"
+        [step]="step"
+        [stepNumber]="i + 1"
+        (onSelectStep)="selectStepByIndex(i)"
+      ></app-vertical-step-content>
       <div
         class="tw-pl-7 tw-inline-block"
         *ngIf="selectedIndex === i"

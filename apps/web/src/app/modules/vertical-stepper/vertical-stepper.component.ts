@@ -16,13 +16,9 @@ export class VerticalStepperComponent extends CdkStepper {
 
   isStepDisabled(index: number) {
     if (this.selectedIndex !== index) {
-      if (this.linear) {
-        return this.selectedIndex === index - 1
-          ? !this.steps.find((_, i) => i == index - 1)?.completed
-          : true;
-      }
-      let step = this.steps.find((_, i) => i == index);
-      return step?.editable && step?.completed;
+      return this.selectedIndex === index - 1
+        ? !this.steps.find((_, i) => i == index - 1)?.completed
+        : true;
     }
     return false;
   }
