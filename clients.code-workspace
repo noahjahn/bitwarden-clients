@@ -33,7 +33,7 @@
     "debug.javascript.terminalOptions": {
       "sourceMapPathOverrides": {
         "webpack:///./~/*": "${workspaceFolder:root}/node_modules/*",
-        "webpack://?:*/*": "${workspaceFolder:root}/*",
+        "webpack://?:*/*": "${workspaceFolder}/*",
         "webpack://@bitwarden/cli/*": "${workspaceFolder}/*"
       }
   },
