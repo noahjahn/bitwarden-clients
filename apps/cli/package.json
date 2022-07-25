@@ -25,7 +25,7 @@
     "build:prod:watch": "cross-env NODE_ENV=production webpack --watch",
     "package": "npm run package:win:x64 && npm run package:win:arm64 && npm run package:mac:x64 && npm run package:mac:arm64 && npm run package:lin:x64 && npm run package:lin:arm64",
     "package:win:x64": "pkg . --targets win-x64 --output ./dist/windows/x64/bw.exe --build",
-    "package:win:arm64": "pkg . --targets win-arm64 --output ./dist/windows/bw.exe --build",
+    "package:win:arm64": "pkg . --targets win-arm64 --output ./dist/windows/arm64/bw.exe --build",
     "package:mac:x64": "pkg . --targets macos-x64 --output ./dist/macos/x64/bw",
     "package:mac:arm64": "pkg . --targets macos-arm64 --output ./dist/macos/arm64/bw",
     "package:lin:x64": "pkg . --targets linux-x64 --output ./dist/linux/x64/bw",
