@@ -85,7 +85,7 @@ jobs:
           echo "SHORT_RUNNER_OS=$(echo ${{ matrix.os }} | awk '{print substr($0, 1, 3)}' | \
             awk '{print tolower($0)}')" >> $GITHUB_ENV
           echo "BINARY_FILE_NAME=bw" >> $GITHUB_ENV
-          if [[ "${{matrix.os}}" == "windows" ]]; then
+          if [[ "${{ matrix.os }}" == "windows" ]]; then
             echo "BINARY_FILE_NAME=bw.exe" >> $GITHUB_ENV
           fi
 
