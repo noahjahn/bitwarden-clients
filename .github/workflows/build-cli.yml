@@ -66,7 +66,7 @@ jobs:
 
 
   cli:
-    name: Build CLI ${{ matrix.os }}
+    name: Build CLI ${{ matrix.os }} (${{ matrix.arrch }})
     strategy:
       matrix:
         arch: [x64, arm64]
@@ -106,7 +106,7 @@ jobs:
         working-directory: ./
 
       - name: Build & Package Unix
-        run: npm run dist:${{ matrix.os }}:${{ matrix.arch }} --quiet
+        run: npm run dist:$SHORT_RUNNER_OS:${{ matrix.arch }} --quiet
 
       - name: Zip Unix
         run: |
@@ -143,155 +143,6 @@ jobs:
           name: bw-${{ matrix.os }}-sha256-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.txt
           path: apps/cli/dist/bw-${{ matrix.os }}-sha256-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.txt
           if-no-files-found: error
-
-  # cli-windows:
-  #   name: Build CLI Windows
-  #   runs-on: windows-2019
-  #   needs:
-  #     - setup
-  #   env:
-  #     _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
-  #     _WIN_PKG_FETCH_VERSION: 16.16.0
-  #     _WIN_PKG_VERSION: 3.4
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # v3.0.2
-
-  #     - name: Setup Windows builder
-  #       run: |
-  #         choco install checksum --no-progress
-  #         choco install reshack --no-progress
-  #         choco install nasm --no-progress
-
-  #     - name: Set up Node
-  #       uses: actions/setup-node@17f8bd926464a1afa4c6a11669539e9c1ba77048  # v3.2.0
-  #       with:
-  #         cache: 'npm'
-  #         cache-dependency-path: '**/package-lock.json'
-  #         node-version: '16'
-
-  #     - name: Install node-gyp
-  #       run: |
-  #         npm install -g node-gyp
-  #         node-gyp install $(node -v)
-
-  #     - name: Get pkg-fetch
-  #       shell: pwsh
-  #       run: |
-  #         cd $HOME
-  #         $fetchedUrl = "https://github.com/vercel/pkg-fetch/releases/download/v$env:_WIN_PKG_VERSION/node-v$env:_WIN_PKG_FETCH_VERSION-win-x64"
-  #         New-Item -ItemType directory -Path .\.pkg-cache
-  #         New-Item -ItemType directory -Path .\.pkg-cache\v$env:_WIN_PKG_VERSION
-  #         Invoke-RestMethod -Uri $fetchedUrl `
-  #           -OutFile ".\.pkg-cache\v$env:_WIN_PKG_VERSION\fetched-v$env:_WIN_PKG_FETCH_VERSION-win-x64"
-
-  #     - name: Setup Version Info
-  #       shell: pwsh
-  #       run: |
-  #         $major,$minor,$patch = $env:_PACKAGE_VERSION.split('.')
-  #         $versionInfo = @"
-  #         1 VERSIONINFO
-  #         FILEVERSION $major,$minor,$patch,0
-  #         PRODUCTVERSION $major,$minor,$patch,0
-  #         FILEOS 0x40004
-  #         FILETYPE 0x1
-  #         {
-  #         BLOCK "StringFileInfo"
-  #         {
-  #           BLOCK "040904b0"
-  #           {
-  #             VALUE "CompanyName", "Bitwarden Inc."
-  #             VALUE "ProductName", "Bitwarden"
-  #             VALUE "FileDescription", "Bitwarden CLI"
-  #             VALUE "FileVersion", "$env:_PACKAGE_VERSION"
-  #             VALUE "ProductVersion", "$env:_PACKAGE_VERSION"
-  #             VALUE "OriginalFilename", "bw.exe"
-  #             VALUE "InternalName", "bw"
-  #             VALUE "LegalCopyright", "Copyright Bitwarden Inc."
-  #           }
-  #         }
-  #         BLOCK "VarFileInfo"
-  #         {
-  #           VALUE "Translation", 0x0409 0x04B0
-  #         }
-  #         }
-  #         "@
-  #         $versionInfo | Out-File ./version-info.rc
-  #     # https://github.com/vercel/pkg-fetch/issues/188
-
-  #     - name: Resource Hacker
-  #       shell: cmd
-  #       run: |
-  #         set PATH=%PATH%;C:\Program Files (x86)\Resource Hacker
-  #         set WIN_PKG=C:\Users\runneradmin\.pkg-cache\v%_WIN_PKG_VERSION%\fetched-v%_WIN_PKG_FETCH_VERSION%-win-x64
-  #         set WIN_PKG_BUILT=C:\Users\runneradmin\.pkg-cache\v%_WIN_PKG_VERSION%\built-v%_WIN_PKG_FETCH_VERSION%-win-x64
-  #         copy %WIN_PKG% %WIN_PKG_BUILT%
-  #         ResourceHacker -open %WIN_PKG_BUILT% -save %WIN_PKG_BUILT% -action delete -mask ICONGROUP,1,
-  #         ResourceHacker -open version-info.rc -save version-info.res -action compile
-  #         ResourceHacker -open %WIN_PKG_BUILT% -save %WIN_PKG_BUILT% -action addoverwrite -resource version-info.res
-
-  #     - name: Install
-  #       run: npm ci
-  #       working-directory: ./
-
-  #     - name: Build & Package Windows
-  #       run: npm run dist:win --quiet
-
-      # - name: Package Chocolatey
-      #   shell: pwsh
-      #   run: |
-      #     Copy-Item -Path stores/chocolatey -Destination dist/chocolatey -Recurse
-      #     Copy-Item dist/windows/bw.exe -Destination dist/chocolatey/tools
-      #     Copy-Item ${{ github.workspace }}/LICENSE.txt -Destination dist/chocolatey/tools
-      #     choco pack dist/chocolatey/bitwarden-cli.nuspec --version ${{ env._PACKAGE_VERSION }} --out dist/chocolatey
-
-      # - name: Zip Windows
-      #   shell: cmd
-      #   run: 7z a ./dist/bw-windows-%_PACKAGE_VERSION%.zip ./dist/windows/bw.exe
-
-      # - name: Version Test
-      #   run: |
-      #     dir ./dist/
-      #     Expand-Archive -Path "./dist/bw-windows-${env:_PACKAGE_VERSION}.zip" -DestinationPath "./test/windows"
-      #     $testVersion = Invoke-Expression '& ./test/windows/bw.exe -v'
-      #     echo "version: $env:_PACKAGE_VERSION"
-      #     echo "testVersion: $testVersion"
-      #     if($testVersion -ne $env:_PACKAGE_VERSION) {
-      #       Throw "Version test failed."
-      #     }
-
-      # - name: Create checksums Windows
-      #   run: |
-      #     checksum -f="./dist/bw-windows-${env:_PACKAGE_VERSION}.zip" `
-      #       -t sha256 | Out-File -Encoding ASCII ./dist/bw-windows-sha256-${env:_PACKAGE_VERSION}.txt
-
-      # - name: Upload windows zip asset
-      #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8  # v3.1.0
-      #   with:
-      #     name: bw-windows-${{ env._PACKAGE_VERSION }}.zip
-      #     path: apps/cli/dist/bw-windows-${{ env._PACKAGE_VERSION }}.zip
-      #     if-no-files-found: error
-
-      # - name: Upload windows checksum asset
-      #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8  # v3.1.0
-      #   with:
-      #     name: bw-windows-sha256-${{ env._PACKAGE_VERSION }}.txt
-      #     path: apps/cli/dist/bw-windows-sha256-${{ env._PACKAGE_VERSION }}.txt
-      #     if-no-files-found: error
-
-      # - name: Upload Chocolatey asset
-      #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8  # v3.1.0
-      #   with:
-      #     name: bitwarden-cli.${{ env._PACKAGE_VERSION }}.nupkg
-      #     path: apps/cli/dist/chocolatey/bitwarden-cli.${{ env._PACKAGE_VERSION }}.nupkg
-      #     if-no-files-found: error
-
-      # - name: Upload NPM Build Directory asset
-      #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8  # v3.1.0
-      #   with:
-      #     name: bitwarden-cli-${{ env._PACKAGE_VERSION }}-npm-build.zip
-      #     path: apps/cli/build
-      #     if-no-files-found: error
 
   # snap:
   #   name: Build Snap
