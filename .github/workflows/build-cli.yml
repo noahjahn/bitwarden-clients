@@ -161,12 +161,14 @@ jobs:
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
         with:
           name: bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
-          path: apps/cli/dist/bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
+          path: dist
 
       - name: Version Test
         run: |
-          unzip "apps/cli/dist/bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "apps/cli/dist/test"
-          testVersion=$(apps/cli/dist/test/bw -v)
+          ls -al
+          ls -al dist
+          unzip "dist/bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "dist/test"
+          testVersion=$(dist/test/bw -v)
           echo "version: $_PACKAGE_VERSION"
           echo "testVersion: $testVersion"
           if [[ $testVersion != $_PACKAGE_VERSION ]]; then
@@ -194,11 +196,11 @@ jobs:
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
         with:
           name: bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
-          path: apps/cli/dist/bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
+          path: dist
 
       - name: Version Test
         run: |
-          dir ./apps/cli/dist
+          dir ./dist
           Expand-Archive -Path "./bw-windows-${env:_PACKAGE_VERSION}-${{ matrix.arch }}.zip" -DestinationPath "./test/windows"
           $testVersion = Invoke-Expression '& ./test/windows/bw.exe -v'
           echo "version: $env:_PACKAGE_VERSION"
