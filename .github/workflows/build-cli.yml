@@ -89,7 +89,7 @@ jobs:
 
       - name: Configure binfmt with QEMU User Emulation
         run: |
-          apt install qemu binfmt-support qemu-user-static
+          sudo apt install qemu binfmt-support qemu-user-static
 
       - name: Set up Node
         uses: actions/setup-node@17f8bd926464a1afa4c6a11669539e9c1ba77048  # v3.2.0
