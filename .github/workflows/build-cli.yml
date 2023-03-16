@@ -111,12 +111,10 @@ jobs:
       - name: Zip Unix
         run: |
           cd ./dist/${{ matrix.os }}/${{ matrix.arch }}
-          zip ../bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip ./bw
+          zip ../../bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip ./bw
 
       - name: Version Test
         run: |
-          ls -al
-          ls -al ./dist
           unzip "./dist/bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "./test"
           testVersion=$(./test/bw -v)
           echo "version: $_PACKAGE_VERSION"
