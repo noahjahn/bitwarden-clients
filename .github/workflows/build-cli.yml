@@ -82,7 +82,7 @@ jobs:
 
       - name: Setup Unix Vars
         run: |
-          echo "SHORT_RUNNER_OS=$(echo $RUNNER_OS | awk '{print substr($0, 1, 3)}' | \
+          echo "SHORT_RUNNER_OS=$(echo ${{ matrix.os }} | awk '{print substr($0, 1, 3)}' | \
             awk '{print tolower($0)}')" >> $GITHUB_ENV
 
       - name: Configure binfmt with QEMU User Emulation
