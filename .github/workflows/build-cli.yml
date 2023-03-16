@@ -150,6 +150,9 @@ jobs:
     env:
       _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # v3.0.2
+
       - name: Setup Unix Vars
         run: |
           echo "LOWER_RUNNER_OS=$(echo $RUNNER_OS | awk '{print tolower($0)}')" >> $GITHUB_ENV
@@ -184,10 +187,13 @@ jobs:
     env:
       _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
     steps:
-      - name: Get bw ${{ matrix.os }} ${{ matrix.arch }} cli
+      - name: Checkout repo
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # v3.0.2
+
+      - name: Get bw windows ${{ matrix.arch }} cli
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
         with:
-          name: bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
+          name: bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
           path: dist
 
       - name: Version Test
