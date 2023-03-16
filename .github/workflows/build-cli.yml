@@ -117,17 +117,6 @@ jobs:
           cd ./dist/${{ matrix.os }}/${{ matrix.arch }}
           zip ../../bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip ./${{ env.BINARY_FILE_NAME }}
 
-      - name: Version Test
-        run: |
-          unzip "./dist/bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "./test"
-          testVersion=$(./test/${{ env.BINARY_FILE_NAME }} -v)
-          echo "version: $_PACKAGE_VERSION"
-          echo "testVersion: $testVersion"
-          if [[ $testVersion != $_PACKAGE_VERSION ]]; then
-            echo "Version test failed."
-            exit 1
-          fi
-
       - name: Create checksums Unix
         run: |
           cd ./dist
@@ -148,10 +137,68 @@ jobs:
           path: apps/cli/dist/bw-${{ matrix.os }}-sha256-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.txt
           if-no-files-found: error
 
+  test:
+    name: Build CLI ${{ matrix.os }} (${{ matrix.arch }})
+    strategy:
+      matrix:
+        arch: [x64]
+        os: [ubuntu-20.04, macos-11]
+    runs-on: ${{ matrix.os }}
+    needs:
+      - cli
+    env:
+      _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
+    steps:
+      - name: Get bw ${{ matrix.os }} ${{ matrix.arch }} cli
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
+        with:
+          name: bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
+          path: dist
+
+      - name: Version Test
+        run: |
+          unzip "./dist/bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "./test"
+          testVersion=$(./test/bw -v)
+          echo "version: $_PACKAGE_VERSION"
+          echo "testVersion: $testVersion"
+          if [[ $testVersion != $_PACKAGE_VERSION ]]; then
+            echo "Version test failed."
+            exit 1
+          fi
+
+  test-windows:
+    name: Build CLI ${{ matrix.os }} (${{ matrix.arch }})
+    strategy:
+      matrix:
+        arch: [x64]
+        os: [windows-2019]
+    runs-on: ${{ matrix.os }}
+    needs:
+      - cli
+    env:
+      _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
+    steps:
+      - name: Get bw ${{ matrix.os }} ${{ matrix.arch }} cli
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
+        with:
+          name: bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
+          path: dist
+
+      - name: Version Test
+        run: |
+          dir ./dist/
+          Expand-Archive -Path "./dist/bw-windows-${env:_PACKAGE_VERSION}.zip" -DestinationPath "./test/windows"
+          $testVersion = Invoke-Expression '& ./test/windows/bw.exe -v'
+          echo "version: $env:_PACKAGE_VERSION"
+          echo "testVersion: $testVersion"
+          if($testVersion -ne $env:_PACKAGE_VERSION) {
+            Throw "Version test failed."
+          }
+
   # snap:
   #   name: Build Snap
   #   runs-on: ubuntu-20.04
-  #   needs: [setup, cli]
+  #   needs: [setup, cli, test]
   #   env:
   #     _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
   #   steps:
