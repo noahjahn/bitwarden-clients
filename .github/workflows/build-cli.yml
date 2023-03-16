@@ -115,6 +115,8 @@ jobs:
 
       - name: Version Test
         run: |
+          ls -al
+          ls -al ./dist
           unzip "./dist/bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "./test"
           testVersion=$(./test/bw -v)
           echo "version: $_PACKAGE_VERSION"
