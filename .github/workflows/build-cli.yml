@@ -161,7 +161,7 @@ jobs:
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
         with:
           name: bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
-          path: dist
+          path: apps/cli/dist
 
       - name: Version Test
         run: |
@@ -196,7 +196,7 @@ jobs:
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
         with:
           name: bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
-          path: dist
+          path: apps/cli/dist
 
       - name: Version Test
         run: |
