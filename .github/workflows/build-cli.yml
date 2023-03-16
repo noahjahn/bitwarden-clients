@@ -145,10 +145,15 @@ jobs:
         os: [ubuntu-20.04, macos-11]
     runs-on: ${{ matrix.os }}
     needs:
+      - setup
       - cli
     env:
       _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
     steps:
+      - name: Setup Unix Vars
+        run: |
+          echo "LOWER_RUNNER_OS=$(echo $RUNNER_OS | awk '{print tolower($0)}')" >> $GITHUB_ENV
+
       - name: Get bw ${{ matrix.os }} ${{ matrix.arch }} cli
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
         with:
@@ -157,7 +162,7 @@ jobs:
 
       - name: Version Test
         run: |
-          unzip "./dist/bw-${{ matrix.os }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "./test"
+          unzip "./dist/bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "./test"
           testVersion=$(./test/bw -v)
           echo "version: $_PACKAGE_VERSION"
           echo "testVersion: $testVersion"
@@ -174,6 +179,7 @@ jobs:
         os: [windows-2019]
     runs-on: ${{ matrix.os }}
     needs:
+      - setup
       - cli
     env:
       _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
