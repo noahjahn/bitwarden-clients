@@ -165,8 +165,6 @@ jobs:
 
       - name: Version Test
         run: |
-          ls -al
-          ls -al dist
           unzip "dist/bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "dist/test"
           testVersion=$(dist/test/bw -v)
           echo "version: $_PACKAGE_VERSION"
@@ -201,7 +199,7 @@ jobs:
       - name: Version Test
         run: |
           dir ./dist
-          Expand-Archive -Path "./bw-windows-${env:_PACKAGE_VERSION}-${{ matrix.arch }}.zip" -DestinationPath "./test/windows"
+          Expand-Archive -Path "./bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -DestinationPath "./test/windows"
           $testVersion = Invoke-Expression '& ./test/windows/bw.exe -v'
           echo "version: $env:_PACKAGE_VERSION"
           echo "testVersion: $testVersion"
