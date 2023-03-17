@@ -137,12 +137,49 @@ jobs:
           path: apps/cli/dist/bw-${{ matrix.os }}-sha256-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.txt
           if-no-files-found: error
 
-  test:
+  test-linux:
     name: Build CLI ${{ matrix.os }} (${{ matrix.arch }})
     strategy:
       matrix:
         arch: [x64]
-        os: [ubuntu-20.04, macos-11]
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    needs:
+      - setup
+      - cli
+    env:
+      _PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # v3.0.2
+
+      - name: Setup Unix Vars
+        run: |
+          echo "LOWER_RUNNER_OS=$(echo $RUNNER_OS | awk '{print tolower($0)}')" >> $GITHUB_ENV
+
+      - name: Get bw ${{ env.LOWER_RUNNER_OS }} ${{ matrix.arch }} cli
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
+        with:
+          name: bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
+          path: apps/cli/dist
+
+      - name: Version Test
+        run: |
+          unzip "dist/bw-${{ env.LOWER_RUNNER_OS }}-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -d "dist/test"
+          testVersion=$(dist/test/bw -v)
+          echo "version: $_PACKAGE_VERSION"
+          echo "testVersion: $testVersion"
+          if [[ $testVersion != $_PACKAGE_VERSION ]]; then
+            echo "Version test failed."
+            exit 1
+          fi
+
+  test-mac:
+    name: Build CLI ${{ matrix.os }} (${{ matrix.arch }})
+    strategy:
+      matrix:
+        arch: [arm64]
+        os: [macos-11]
     runs-on: ${{ matrix.os }}
     needs:
       - setup
@@ -196,10 +233,12 @@ jobs:
           name: bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip
           path: apps/cli/dist
 
+          
+
       - name: Version Test
         run: |
           dir ./dist
-          Expand-Archive -Path "./bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -DestinationPath "./test/windows"
+          Expand-Archive -Path "./dist/bw-windows-${{ env._PACKAGE_VERSION }}-${{ matrix.arch }}.zip" -DestinationPath "./test/windows"
           $testVersion = Invoke-Expression '& ./test/windows/bw.exe -v'
           echo "version: $env:_PACKAGE_VERSION"
           echo "testVersion: $testVersion"
